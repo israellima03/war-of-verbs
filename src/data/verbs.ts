@@ -1,0 +1,261 @@
+// Datos locales de verbos, mientras el proyecto no tenga base de datos.
+// El día que agregues una BD, solo tendrás que reemplazar este archivo
+// por una consulta (por ejemplo a Postgres o Supabase); el resto de la
+// app seguirá funcionando igual porque todos usan el tipo Verb.
+//
+// Para agregar un verbo, copia un bloque { ... } y cambia sus valores.
+// Usa un "meaning" distinto para cada verbo, así no se confunden en los juegos.
+
+import type { Verb } from "../types/verb";
+
+export const verbs: Verb[] = [
+  // ---- Verbos regulares ----
+  { id: "play", baseForm: "PLAY", pastSimple: "PLAYED", pastParticiple: "PLAYED", meaning: "JUGAR", type: "regular" },
+  { id: "walk", baseForm: "WALK", pastSimple: "WALKED", pastParticiple: "WALKED", meaning: "CAMINAR", type: "regular" },
+  { id: "study", baseForm: "STUDY", pastSimple: "STUDIED", pastParticiple: "STUDIED", meaning: "ESTUDIAR", type: "regular" },
+  { id: "want", baseForm: "WANT", pastSimple: "WANTED", pastParticiple: "WANTED", meaning: "QUERER", type: "regular" },
+  { id: "work", baseForm: "WORK", pastSimple: "WORKED", pastParticiple: "WORKED", meaning: "TRABAJAR", type: "regular" },
+  { id: "live", baseForm: "LIVE", pastSimple: "LIVED", pastParticiple: "LIVED", meaning: "VIVIR", type: "regular" },
+  { id: "love", baseForm: "LOVE", pastSimple: "LOVED", pastParticiple: "LOVED", meaning: "AMAR", type: "regular" },
+  { id: "open", baseForm: "OPEN", pastSimple: "OPENED", pastParticiple: "OPENED", meaning: "ABRIR", type: "regular" },
+  { id: "close", baseForm: "CLOSE", pastSimple: "CLOSED", pastParticiple: "CLOSED", meaning: "CERRAR", type: "regular" },
+  { id: "help", baseForm: "HELP", pastSimple: "HELPED", pastParticiple: "HELPED", meaning: "AYUDAR", type: "regular" },
+  { id: "listen", baseForm: "LISTEN", pastSimple: "LISTENED", pastParticiple: "LISTENED", meaning: "ESCUCHAR", type: "regular" },
+  { id: "watch", baseForm: "WATCH", pastSimple: "WATCHED", pastParticiple: "WATCHED", meaning: "MIRAR", type: "regular" },
+  { id: "clean", baseForm: "CLEAN", pastSimple: "CLEANED", pastParticiple: "CLEANED", meaning: "LIMPIAR", type: "regular" },
+  { id: "cook", baseForm: "COOK", pastSimple: "COOKED", pastParticiple: "COOKED", meaning: "COCINAR", type: "regular" },
+  { id: "travel", baseForm: "TRAVEL", pastSimple: "TRAVELED", pastParticiple: "TRAVELED", meaning: "VIAJAR", type: "regular" },
+  { id: "start", baseForm: "START", pastSimple: "STARTED", pastParticiple: "STARTED", meaning: "COMENZAR", type: "regular" },
+  { id: "finish", baseForm: "FINISH", pastSimple: "FINISHED", pastParticiple: "FINISHED", meaning: "TERMINAR", type: "regular" },
+  { id: "dance", baseForm: "DANCE", pastSimple: "DANCED", pastParticiple: "DANCED", meaning: "BAILAR", type: "regular" },
+  { id: "call", baseForm: "CALL", pastSimple: "CALLED", pastParticiple: "CALLED", meaning: "LLAMAR", type: "regular" },
+  { id: "need", baseForm: "NEED", pastSimple: "NEEDED", pastParticiple: "NEEDED", meaning: "NECESITAR", type: "regular" },
+  { id: "arrive", baseForm: "ARRIVE", pastSimple: "ARRIVED", pastParticiple: "ARRIVED", meaning: "LLEGAR", type: "regular" },
+  { id: "ask", baseForm: "ASK", pastSimple: "ASKED", pastParticiple: "ASKED", meaning: "PREGUNTAR", type: "regular" },
+  { id: "answer", baseForm: "ANSWER", pastSimple: "ANSWERED", pastParticiple: "ANSWERED", meaning: "RESPONDER", type: "regular" },
+  { id: "try", baseForm: "TRY", pastSimple: "TRIED", pastParticiple: "TRIED", meaning: "INTENTAR", type: "regular" },
+
+  // ---- Verbos irregulares ----
+  { id: "go", baseForm: "GO", pastSimple: "WENT", pastParticiple: "GONE", meaning: "IR", type: "irregular" },
+  { id: "eat", baseForm: "EAT", pastSimple: "ATE", pastParticiple: "EATEN", meaning: "COMER", type: "irregular" },
+  { id: "see", baseForm: "SEE", pastSimple: "SAW", pastParticiple: "SEEN", meaning: "VER", type: "irregular" },
+  { id: "take", baseForm: "TAKE", pastSimple: "TOOK", pastParticiple: "TAKEN", meaning: "TOMAR", type: "irregular" },
+  { id: "write", baseForm: "WRITE", pastSimple: "WROTE", pastParticiple: "WRITTEN", meaning: "ESCRIBIR", type: "irregular" },
+  { id: "speak", baseForm: "SPEAK", pastSimple: "SPOKE", pastParticiple: "SPOKEN", meaning: "HABLAR", type: "irregular" },
+  { id: "have", baseForm: "HAVE", pastSimple: "HAD", pastParticiple: "HAD", meaning: "TENER", type: "irregular" },
+  { id: "do", baseForm: "DO", pastSimple: "DID", pastParticiple: "DONE", meaning: "HACER", type: "irregular" },
+  { id: "make", baseForm: "MAKE", pastSimple: "MADE", pastParticiple: "MADE", meaning: "FABRICAR", type: "irregular" },
+  { id: "say", baseForm: "SAY", pastSimple: "SAID", pastParticiple: "SAID", meaning: "DECIR", type: "irregular" },
+  { id: "know", baseForm: "KNOW", pastSimple: "KNEW", pastParticiple: "KNOWN", meaning: "SABER", type: "irregular" },
+  { id: "think", baseForm: "THINK", pastSimple: "THOUGHT", pastParticiple: "THOUGHT", meaning: "PENSAR", type: "irregular" },
+  { id: "come", baseForm: "COME", pastSimple: "CAME", pastParticiple: "COME", meaning: "VENIR", type: "irregular" },
+  { id: "give", baseForm: "GIVE", pastSimple: "GAVE", pastParticiple: "GIVEN", meaning: "DAR", type: "irregular" },
+  { id: "find", baseForm: "FIND", pastSimple: "FOUND", pastParticiple: "FOUND", meaning: "ENCONTRAR", type: "irregular" },
+  { id: "tell", baseForm: "TELL", pastSimple: "TOLD", pastParticiple: "TOLD", meaning: "CONTAR", type: "irregular" },
+  { id: "leave", baseForm: "LEAVE", pastSimple: "LEFT", pastParticiple: "LEFT", meaning: "DEJAR", type: "irregular" },
+  { id: "feel", baseForm: "FEEL", pastSimple: "FELT", pastParticiple: "FELT", meaning: "SENTIR", type: "irregular" },
+  { id: "bring", baseForm: "BRING", pastSimple: "BROUGHT", pastParticiple: "BROUGHT", meaning: "TRAER", type: "irregular" },
+  { id: "begin", baseForm: "BEGIN", pastSimple: "BEGAN", pastParticiple: "BEGUN", meaning: "EMPEZAR", type: "irregular" },
+  { id: "keep", baseForm: "KEEP", pastSimple: "KEPT", pastParticiple: "KEPT", meaning: "MANTENER", type: "irregular" },
+  { id: "buy", baseForm: "BUY", pastSimple: "BOUGHT", pastParticiple: "BOUGHT", meaning: "COMPRAR", type: "irregular" },
+  { id: "drink", baseForm: "DRINK", pastSimple: "DRANK", pastParticiple: "DRUNK", meaning: "BEBER", type: "irregular" },
+  { id: "drive", baseForm: "DRIVE", pastSimple: "DROVE", pastParticiple: "DRIVEN", meaning: "CONDUCIR", type: "irregular" },
+  { id: "sleep", baseForm: "SLEEP", pastSimple: "SLEPT", pastParticiple: "SLEPT", meaning: "DORMIR", type: "irregular" },
+  { id: "swim", baseForm: "SWIM", pastSimple: "SWAM", pastParticiple: "SWUM", meaning: "NADAR", type: "irregular" },
+  { id: "sing", baseForm: "SING", pastSimple: "SANG", pastParticiple: "SUNG", meaning: "CANTAR", type: "irregular" },
+  { id: "run", baseForm: "RUN", pastSimple: "RAN", pastParticiple: "RUN", meaning: "CORRER", type: "irregular" },
+  { id: "read", baseForm: "READ", pastSimple: "READ", pastParticiple: "READ", meaning: "LEER", type: "irregular" },
+  { id: "teach", baseForm: "TEACH", pastSimple: "TAUGHT", pastParticiple: "TAUGHT", meaning: "ENSEÑAR", type: "irregular" },
+  { id: "break", baseForm: "BREAK", pastSimple: "BROKE", pastParticiple: "BROKEN", meaning: "ROMPER", type: "irregular" },
+  { id: "choose", baseForm: "CHOOSE", pastSimple: "CHOSE", pastParticiple: "CHOSEN", meaning: "ELEGIR", type: "irregular" },
+  { id: "forget", baseForm: "FORGET", pastSimple: "FORGOT", pastParticiple: "FORGOTTEN", meaning: "OLVIDAR", type: "irregular" },
+  { id: "fly", baseForm: "FLY", pastSimple: "FLEW", pastParticiple: "FLOWN", meaning: "VOLAR", type: "irregular" },
+  { id: "win", baseForm: "WIN", pastSimple: "WON", pastParticiple: "WON", meaning: "GANAR", type: "irregular" },
+  { id: "lose", baseForm: "LOSE", pastSimple: "LOST", pastParticiple: "LOST", meaning: "PERDER", type: "irregular" },
+  { id: "sell", baseForm: "SELL", pastSimple: "SOLD", pastParticiple: "SOLD", meaning: "VENDER", type: "irregular" },
+  { id: "pay", baseForm: "PAY", pastSimple: "PAID", pastParticiple: "PAID", meaning: "PAGAR", type: "irregular" },
+  { id: "meet", baseForm: "MEET", pastSimple: "MET", pastParticiple: "MET", meaning: "CONOCER", type: "irregular" },
+  { id: "understand", baseForm: "UNDERSTAND", pastSimple: "UNDERSTOOD", pastParticiple: "UNDERSTOOD", meaning: "ENTENDER", type: "irregular" },
+  { id: "hear", baseForm: "HEAR", pastSimple: "HEARD", pastParticiple: "HEARD", meaning: "OÍR", type: "irregular" },
+
+  // =====================================================================
+  // Verbos del libro SHORTCUT (FNI - LIN 2), tablas "KEY WORDS" de cada
+  // lección. "lessons" dice en qué lecciones aparece (algunos verbos
+  // están en varias, ej. IMPROVE en la 3 y la 4).
+  // Se respeta la ortografía británica del libro (REALISE, SWIVELLED).
+  // Los phrasal verbs (BACK UP, RUN OUT...) también cuentan.
+  // =====================================================================
+
+  // ---- Lesson 1: The Dinosaurs ----
+  { id: "back-up", baseForm: "BACK UP", pastSimple: "BACKED UP", pastParticiple: "BACKED UP", meaning: "RESPALDAR", type: "regular", lessons: [1] },
+  { id: "belong", baseForm: "BELONG", pastSimple: "BELONGED", pastParticiple: "BELONGED", meaning: "PERTENECER", type: "regular", lessons: [1] },
+  { id: "develop", baseForm: "DEVELOP", pastSimple: "DEVELOPED", pastParticiple: "DEVELOPED", meaning: "DESARROLLAR", type: "regular", lessons: [1] },
+  { id: "drill", baseForm: "DRILL", pastSimple: "DRILLED", pastParticiple: "DRILLED", meaning: "PERFORAR", type: "regular", lessons: [1] },
+  { id: "enable", baseForm: "ENABLE", pastSimple: "ENABLED", pastParticiple: "ENABLED", meaning: "HABILITAR", type: "regular", lessons: [1] },
+  { id: "endure", baseForm: "ENDURE", pastSimple: "ENDURED", pastParticiple: "ENDURED", meaning: "SOPORTAR", type: "regular", lessons: [1] },
+  { id: "feed", baseForm: "FEED", pastSimple: "FED", pastParticiple: "FED", meaning: "ALIMENTAR", type: "irregular", lessons: [1] },
+  { id: "go-on", baseForm: "GO ON", pastSimple: "WENT ON", pastParticiple: "GONE ON", meaning: "CONTINUAR", type: "irregular", lessons: [1] },
+  { id: "hit", baseForm: "HIT", pastSimple: "HIT", pastParticiple: "HIT", meaning: "GOLPEAR", type: "irregular", lessons: [1] },
+  { id: "provide", baseForm: "PROVIDE", pastSimple: "PROVIDED", pastParticiple: "PROVIDED", meaning: "PROVEER", type: "regular", lessons: [1] },
+  { id: "release", baseForm: "RELEASE", pastSimple: "RELEASED", pastParticiple: "RELEASED", meaning: "LIBERAR", type: "regular", lessons: [1] },
+  { id: "reveal", baseForm: "REVEAL", pastSimple: "REVEALED", pastParticiple: "REVEALED", meaning: "REVELAR", type: "regular", lessons: [1] },
+  { id: "search", baseForm: "SEARCH", pastSimple: "SEARCHED", pastParticiple: "SEARCHED", meaning: "BUSCAR", type: "regular", lessons: [1] },
+  { id: "spread", baseForm: "SPREAD", pastSimple: "SPREAD", pastParticiple: "SPREAD", meaning: "ESPARCIR", type: "irregular", lessons: [1] },
+  { id: "state", baseForm: "STATE", pastSimple: "STATED", pastParticiple: "STATED", meaning: "DECLARAR", type: "regular", lessons: [1] },
+  { id: "throw", baseForm: "THROW", pastSimple: "THREW", pastParticiple: "THROWN", meaning: "LANZAR", type: "irregular", lessons: [1] },
+  { id: "weigh", baseForm: "WEIGH", pastSimple: "WEIGHED", pastParticiple: "WEIGHED", meaning: "PESAR", type: "regular", lessons: [1] },
+  { id: "wipe-out", baseForm: "WIPE OUT", pastSimple: "WIPED OUT", pastParticiple: "WIPED OUT", meaning: "EXTERMINAR", type: "regular", lessons: [1] },
+
+  // ---- Lesson 2: The Egyptian Pyramids ----
+  { id: "agree", baseForm: "AGREE", pastSimple: "AGREED", pastParticiple: "AGREED", meaning: "ESTAR DE ACUERDO", type: "regular", lessons: [2, 5] },
+  { id: "believe", baseForm: "BELIEVE", pastSimple: "BELIEVED", pastParticiple: "BELIEVED", meaning: "CREER", type: "regular", lessons: [2] },
+  { id: "bury", baseForm: "BURY", pastSimple: "BURIED", pastParticiple: "BURIED", meaning: "ENTERRAR", type: "regular", lessons: [2] },
+  { id: "dry-out", baseForm: "DRY OUT", pastSimple: "DRIED OUT", pastParticiple: "DRIED OUT", meaning: "SECARSE", type: "regular", lessons: [2] },
+  { id: "include", baseForm: "INCLUDE", pastSimple: "INCLUDED", pastParticiple: "INCLUDED", meaning: "INCLUIR", type: "regular", lessons: [2] },
+  { id: "intend", baseForm: "INTEND", pastSimple: "INTENDED", pastParticiple: "INTENDED", meaning: "PROPONERSE", type: "regular", lessons: [2] },
+  { id: "involve", baseForm: "INVOLVE", pastSimple: "INVOLVED", pastParticiple: "INVOLVED", meaning: "IMPLICAR", type: "regular", lessons: [2, 4] },
+  { id: "join", baseForm: "JOIN", pastSimple: "JOINED", pastParticiple: "JOINED", meaning: "UNIRSE", type: "regular", lessons: [2] },
+  { id: "make-up", baseForm: "MAKE UP", pastSimple: "MADE UP", pastParticiple: "MADE UP", meaning: "CONFORMAR", type: "irregular", lessons: [2, 6, 13] },
+  { id: "place", baseForm: "PLACE", pastSimple: "PLACED", pastParticiple: "PLACED", meaning: "COLOCAR", type: "regular", lessons: [2, 8] },
+  { id: "prevent", baseForm: "PREVENT", pastSimple: "PREVENTED", pastParticiple: "PREVENTED", meaning: "IMPEDIR", type: "regular", lessons: [2, 13] },
+  { id: "remove", baseForm: "REMOVE", pastSimple: "REMOVED", pastParticiple: "REMOVED", meaning: "QUITAR", type: "regular", lessons: [2] },
+  { id: "take-place", baseForm: "TAKE PLACE", pastSimple: "TOOK PLACE", pastParticiple: "TAKEN PLACE", meaning: "TENER LUGAR", type: "irregular", lessons: [2] },
+
+  // ---- Lesson 3: UFO ----
+  { id: "avoid", baseForm: "AVOID", pastSimple: "AVOIDED", pastParticiple: "AVOIDED", meaning: "EVITAR", type: "regular", lessons: [3] },
+  { id: "broadcast", baseForm: "BROADCAST", pastSimple: "BROADCAST", pastParticiple: "BROADCAST", meaning: "TRANSMITIR", type: "irregular", lessons: [3] },
+  { id: "conceal", baseForm: "CONCEAL", pastSimple: "CONCEALED", pastParticiple: "CONCEALED", meaning: "OCULTAR", type: "regular", lessons: [3] },
+  { id: "crash", baseForm: "CRASH", pastSimple: "CRASHED", pastParticiple: "CRASHED", meaning: "ESTRELLARSE", type: "regular", lessons: [3] },
+  { id: "go-dead", baseForm: "GO DEAD", pastSimple: "WENT DEAD", pastParticiple: "GONE DEAD", meaning: "APAGARSE", type: "irregular", lessons: [3] },
+  { id: "improve", baseForm: "IMPROVE", pastSimple: "IMPROVED", pastParticiple: "IMPROVED", meaning: "MEJORAR", type: "regular", lessons: [3, 4] },
+  { id: "kidnap", baseForm: "KIDNAP", pastSimple: "KIDNAPPED", pastParticiple: "KIDNAPPED", meaning: "SECUESTRAR", type: "regular", lessons: [3] },
+  { id: "land", baseForm: "LAND", pastSimple: "LANDED", pastParticiple: "LANDED", meaning: "ATERRIZAR", type: "regular", lessons: [3] },
+  { id: "last", baseForm: "LAST", pastSimple: "LASTED", pastParticiple: "LASTED", meaning: "DURAR", type: "regular", lessons: [3, 9] },
+  { id: "look-like", baseForm: "LOOK LIKE", pastSimple: "LOOKED LIKE", pastParticiple: "LOOKED LIKE", meaning: "PARECERSE A", type: "regular", lessons: [3] },
+  { id: "manage", baseForm: "MANAGE", pastSimple: "MANAGED", pastParticiple: "MANAGED", meaning: "LOGRAR", type: "regular", lessons: [3, 5] },
+  { id: "melt", baseForm: "MELT", pastSimple: "MELTED", pastParticiple: "MELTED", meaning: "DERRETIR", type: "regular", lessons: [3, 14] },
+  { id: "perform", baseForm: "PERFORM", pastSimple: "PERFORMED", pastParticiple: "PERFORMED", meaning: "REALIZAR", type: "regular", lessons: [3] },
+  { id: "shake", baseForm: "SHAKE", pastSimple: "SHOOK", pastParticiple: "SHAKEN", meaning: "SACUDIR", type: "irregular", lessons: [3] },
+  { id: "speed-up", baseForm: "SPEED UP", pastSimple: "SPED UP", pastParticiple: "SPED UP", meaning: "ACELERAR", type: "irregular", lessons: [3] },
+
+  // ---- Lesson 4: Numbers ----
+  { id: "be-born", baseForm: "BE BORN", pastSimple: "WAS BORN", pastParticiple: "BEEN BORN", meaning: "NACER", type: "irregular", lessons: [4] },
+  { id: "depend-on", baseForm: "DEPEND ON", pastSimple: "DEPENDED ON", pastParticiple: "DEPENDED ON", meaning: "DEPENDER DE", type: "regular", lessons: [4] },
+  { id: "deal-with", baseForm: "DEAL WITH", pastSimple: "DEALT WITH", pastParticiple: "DEALT WITH", meaning: "TRATAR CON", type: "irregular", lessons: [4, 5] },
+  { id: "evolve", baseForm: "EVOLVE", pastSimple: "EVOLVED", pastParticiple: "EVOLVED", meaning: "EVOLUCIONAR", type: "regular", lessons: [4] },
+  { id: "handle", baseForm: "HANDLE", pastSimple: "HANDLED", pastParticiple: "HANDLED", meaning: "MANEJAR", type: "regular", lessons: [4, 5, 7] },
+  { id: "measure", baseForm: "MEASURE", pastSimple: "MEASURED", pastParticiple: "MEASURED", meaning: "MEDIR", type: "regular", lessons: [4, 8] },
+  { id: "reach", baseForm: "REACH", pastSimple: "REACHED", pastParticiple: "REACHED", meaning: "ALCANZAR", type: "regular", lessons: [4] },
+  { id: "regard", baseForm: "REGARD", pastSimple: "REGARDED", pastParticiple: "REGARDED", meaning: "CONSIDERAR", type: "regular", lessons: [4] },
+  { id: "rely-on", baseForm: "RELY ON", pastSimple: "RELIED ON", pastParticiple: "RELIED ON", meaning: "CONFIAR EN", type: "regular", lessons: [4] },
+
+  // ---- Lesson 5: Pioneers ----
+  { id: "assist", baseForm: "ASSIST", pastSimple: "ASSISTED", pastParticiple: "ASSISTED", meaning: "ASISTIR", type: "regular", lessons: [5] },
+  { id: "award", baseForm: "AWARD", pastSimple: "AWARDED", pastParticiple: "AWARDED", meaning: "PREMIAR", type: "regular", lessons: [5] },
+  { id: "isolate", baseForm: "ISOLATE", pastSimple: "ISOLATED", pastParticiple: "ISOLATED", meaning: "AISLAR", type: "regular", lessons: [5] },
+  { id: "place-bets", baseForm: "PLACE BETS", pastSimple: "PLACED BETS", pastParticiple: "PLACED BETS", meaning: "APOSTAR", type: "regular", lessons: [5] },
+  { id: "realise", baseForm: "REALISE", pastSimple: "REALISED", pastParticiple: "REALISED", meaning: "DARSE CUENTA", type: "regular", lessons: [5] },
+  { id: "remain", baseForm: "REMAIN", pastSimple: "REMAINED", pastParticiple: "REMAINED", meaning: "PERMANECER", type: "regular", lessons: [5] },
+  { id: "resemble", baseForm: "RESEMBLE", pastSimple: "RESEMBLED", pastParticiple: "RESEMBLED", meaning: "ASEMEJARSE", type: "regular", lessons: [5] },
+  { id: "run-out", baseForm: "RUN OUT", pastSimple: "RAN OUT", pastParticiple: "RUN OUT", meaning: "AGOTARSE", type: "irregular", lessons: [5] },
+  { id: "seem", baseForm: "SEEM", pastSimple: "SEEMED", pastParticiple: "SEEMED", meaning: "PARECER", type: "regular", lessons: [5, 14] },
+  { id: "share", baseForm: "SHARE", pastSimple: "SHARED", pastParticiple: "SHARED", meaning: "COMPARTIR", type: "regular", lessons: [5] },
+  { id: "succeed", baseForm: "SUCCEED", pastSimple: "SUCCEEDED", pastParticiple: "SUCCEEDED", meaning: "TENER ÉXITO", type: "regular", lessons: [5, 13] },
+  { id: "fail", baseForm: "FAIL", pastSimple: "FAILED", pastParticiple: "FAILED", meaning: "FALLAR", type: "regular", lessons: [5] },
+
+  // ---- Lesson 6: Dialogue in Cyberspace ----
+  { id: "blame", baseForm: "BLAME", pastSimple: "BLAMED", pastParticiple: "BLAMED", meaning: "CULPAR", type: "regular", lessons: [6] },
+  { id: "devise", baseForm: "DEVISE", pastSimple: "DEVISED", pastParticiple: "DEVISED", meaning: "IDEAR", type: "regular", lessons: [6] },
+  { id: "erode", baseForm: "ERODE", pastSimple: "ERODED", pastParticiple: "ERODED", meaning: "EROSIONAR", type: "regular", lessons: [6] },
+  { id: "flow", baseForm: "FLOW", pastSimple: "FLOWED", pastParticiple: "FLOWED", meaning: "FLUIR", type: "regular", lessons: [6] },
+  { id: "hold", baseForm: "HOLD", pastSimple: "HELD", pastParticiple: "HELD", meaning: "SOSTENER", type: "irregular", lessons: [6] },
+  { id: "point-out", baseForm: "POINT OUT", pastSimple: "POINTED OUT", pastParticiple: "POINTED OUT", meaning: "SEÑALAR", type: "regular", lessons: [6] },
+  { id: "shine", baseForm: "SHINE", pastSimple: "SHONE", pastParticiple: "SHONE", meaning: "BRILLAR", type: "irregular", lessons: [6, 14] },
+  { id: "yield", baseForm: "YIELD", pastSimple: "YIELDED", pastParticiple: "YIELDED", meaning: "PRODUCIR", type: "regular", lessons: [6] },
+
+  // ---- Lesson 7: Computers Today ----
+  { id: "allow", baseForm: "ALLOW", pastSimple: "ALLOWED", pastParticiple: "ALLOWED", meaning: "PERMITIR", type: "regular", lessons: [7, 11] },
+  { id: "come-out", baseForm: "COME OUT", pastSimple: "CAME OUT", pastParticiple: "COME OUT", meaning: "SALIR", type: "irregular", lessons: [7] },
+  { id: "forecast", baseForm: "FORECAST", pastSimple: "FORECAST", pastParticiple: "FORECAST", meaning: "PRONOSTICAR", type: "irregular", lessons: [7] },
+  { id: "record", baseForm: "RECORD", pastSimple: "RECORDED", pastParticiple: "RECORDED", meaning: "GRABAR", type: "regular", lessons: [7] },
+  { id: "work-out", baseForm: "WORK OUT", pastSimple: "WORKED OUT", pastParticiple: "WORKED OUT", meaning: "RESOLVER", type: "regular", lessons: [7, 9] },
+
+  // ---- Lesson 8: The Radio Telescope ----
+  { id: "cool", baseForm: "COOL", pastSimple: "COOLED", pastParticiple: "COOLED", meaning: "ENFRIAR", type: "regular", lessons: [8] },
+  { id: "follow", baseForm: "FOLLOW", pastSimple: "FOLLOWED", pastParticiple: "FOLLOWED", meaning: "SEGUIR", type: "regular", lessons: [8] },
+  { id: "gather", baseForm: "GATHER", pastSimple: "GATHERED", pastParticiple: "GATHERED", meaning: "RECOLECTAR", type: "regular", lessons: [8] },
+  { id: "light", baseForm: "LIGHT", pastSimple: "LIT", pastParticiple: "LIT", meaning: "ILUMINAR", type: "irregular", lessons: [8] },
+  { id: "link", baseForm: "LINK", pastSimple: "LINKED", pastParticiple: "LINKED", meaning: "ENLAZAR", type: "regular", lessons: [8] },
+  { id: "mask", baseForm: "MASK", pastSimple: "MASKED", pastParticiple: "MASKED", meaning: "ENMASCARAR", type: "regular", lessons: [8] },
+  { id: "swivel", baseForm: "SWIVEL", pastSimple: "SWIVELLED", pastParticiple: "SWIVELLED", meaning: "GIRAR", type: "regular", lessons: [8] },
+
+  // ---- Lesson 9: Suspension Bridges ----
+  { id: "assemble", baseForm: "ASSEMBLE", pastSimple: "ASSEMBLED", pastParticiple: "ASSEMBLED", meaning: "ENSAMBLAR", type: "regular", lessons: [9] },
+  { id: "bundle", baseForm: "BUNDLE", pastSimple: "BUNDLED", pastParticiple: "BUNDLED", meaning: "AGRUPAR", type: "regular", lessons: [9] },
+  { id: "carry-out", baseForm: "CARRY OUT", pastSimple: "CARRIED OUT", pastParticiple: "CARRIED OUT", meaning: "LLEVAR A CABO", type: "regular", lessons: [9] },
+  { id: "ensure", baseForm: "ENSURE", pastSimple: "ENSURED", pastParticiple: "ENSURED", meaning: "ASEGURAR", type: "regular", lessons: [9] },
+  { id: "hang", baseForm: "HANG", pastSimple: "HUNG", pastParticiple: "HUNG", meaning: "COLGAR", type: "irregular", lessons: [9] },
+  { id: "push", baseForm: "PUSH", pastSimple: "PUSHED", pastParticiple: "PUSHED", meaning: "EMPUJAR", type: "regular", lessons: [9] },
+  { id: "pull", baseForm: "PULL", pastSimple: "PULLED", pastParticiple: "PULLED", meaning: "JALAR", type: "regular", lessons: [9] },
+  { id: "reinforce", baseForm: "REINFORCE", pastSimple: "REINFORCED", pastParticiple: "REINFORCED", meaning: "REFORZAR", type: "regular", lessons: [9] },
+  { id: "sink", baseForm: "SINK", pastSimple: "SANK", pastParticiple: "SUNK", meaning: "HUNDIRSE", type: "irregular", lessons: [9] },
+  { id: "sling", baseForm: "SLING", pastSimple: "SLUNG", pastParticiple: "SLUNG", meaning: "SUSPENDER", type: "irregular", lessons: [9] },
+  { id: "span", baseForm: "SPAN", pastSimple: "SPANNED", pastParticiple: "SPANNED", meaning: "ABARCAR", type: "regular", lessons: [9] },
+  { id: "surpass", baseForm: "SURPASS", pastSimple: "SURPASSED", pastParticiple: "SURPASSED", meaning: "SUPERAR", type: "regular", lessons: [9] },
+  { id: "weld", baseForm: "WELD", pastSimple: "WELDED", pastParticiple: "WELDED", meaning: "SOLDAR", type: "regular", lessons: [9] },
+  { id: "withstand", baseForm: "WITHSTAND", pastSimple: "WITHSTOOD", pastParticiple: "WITHSTOOD", meaning: "RESISTIR", type: "irregular", lessons: [9] },
+
+  // ---- Lesson 10: Natural Resources ----
+  { id: "apply", baseForm: "APPLY", pastSimple: "APPLIED", pastParticiple: "APPLIED", meaning: "APLICAR", type: "regular", lessons: [10] },
+  { id: "damage", baseForm: "DAMAGE", pastSimple: "DAMAGED", pastParticiple: "DAMAGED", meaning: "DAÑAR", type: "regular", lessons: [10] },
+  { id: "exploit", baseForm: "EXPLOIT", pastSimple: "EXPLOITED", pastParticiple: "EXPLOITED", meaning: "EXPLOTAR", type: "regular", lessons: [10] },
+  { id: "filter", baseForm: "FILTER", pastSimple: "FILTERED", pastParticiple: "FILTERED", meaning: "FILTRAR", type: "regular", lessons: [10] },
+  { id: "fill", baseForm: "FILL", pastSimple: "FILLED", pastParticiple: "FILLED", meaning: "LLENAR", type: "regular", lessons: [10] },
+  { id: "freeze", baseForm: "FREEZE", pastSimple: "FROZE", pastParticiple: "FROZEN", meaning: "CONGELAR", type: "irregular", lessons: [10] },
+  { id: "hide", baseForm: "HIDE", pastSimple: "HID", pastParticiple: "HIDDEN", meaning: "ESCONDER", type: "irregular", lessons: [10] },
+  { id: "lock-up", baseForm: "LOCK UP", pastSimple: "LOCKED UP", pastParticiple: "LOCKED UP", meaning: "ENCERRAR", type: "regular", lessons: [10] },
+  { id: "run-off", baseForm: "RUN OFF", pastSimple: "RAN OFF", pastParticiple: "RUN OFF", meaning: "ESCURRIRSE", type: "irregular", lessons: [10] },
+  { id: "seep-away", baseForm: "SEEP AWAY", pastSimple: "SEEPED AWAY", pastParticiple: "SEEPED AWAY", meaning: "FILTRARSE", type: "regular", lessons: [10] },
+  { id: "supply", baseForm: "SUPPLY", pastSimple: "SUPPLIED", pastParticiple: "SUPPLIED", meaning: "SUMINISTRAR", type: "regular", lessons: [10] },
+  { id: "survive", baseForm: "SURVIVE", pastSimple: "SURVIVED", pastParticiple: "SURVIVED", meaning: "SOBREVIVIR", type: "regular", lessons: [10] },
+  { id: "trap", baseForm: "TRAP", pastSimple: "TRAPPED", pastParticiple: "TRAPPED", meaning: "ATRAPAR", type: "regular", lessons: [10] },
+  { id: "turn-into", baseForm: "TURN INTO", pastSimple: "TURNED INTO", pastParticiple: "TURNED INTO", meaning: "CONVERTIRSE EN", type: "regular", lessons: [10] },
+
+  // ---- Lesson 11: Energy from the Earth ----
+  { id: "anchor", baseForm: "ANCHOR", pastSimple: "ANCHORED", pastParticiple: "ANCHORED", meaning: "ANCLAR", type: "regular", lessons: [11] },
+  { id: "break-down", baseForm: "BREAK DOWN", pastSimple: "BROKE DOWN", pastParticiple: "BROKEN DOWN", meaning: "DESCOMPONER", type: "irregular", lessons: [11] },
+  { id: "burn-away", baseForm: "BURN AWAY", pastSimple: "BURNED AWAY", pastParticiple: "BURNED AWAY", meaning: "QUEMARSE", type: "regular", lessons: [11] },
+  { id: "decay", baseForm: "DECAY", pastSimple: "DECAYED", pastParticiple: "DECAYED", meaning: "PUDRIRSE", type: "regular", lessons: [11] },
+  { id: "heat", baseForm: "HEAT", pastSimple: "HEATED", pastParticiple: "HEATED", meaning: "CALENTAR", type: "regular", lessons: [11] },
+  { id: "pile-up", baseForm: "PILE UP", pastSimple: "PILED UP", pastParticiple: "PILED UP", meaning: "ACUMULARSE", type: "regular", lessons: [11] },
+  { id: "pump", baseForm: "PUMP", pastSimple: "PUMPED", pastParticiple: "PUMPED", meaning: "BOMBEAR", type: "regular", lessons: [11] },
+  { id: "use-up", baseForm: "USE UP", pastSimple: "USED UP", pastParticiple: "USED UP", meaning: "CONSUMIR", type: "regular", lessons: [11] },
+
+  // ---- Lesson 12: Renewable and Non-renewable Energy Sources ----
+  { id: "build", baseForm: "BUILD", pastSimple: "BUILT", pastParticiple: "BUILT", meaning: "CONSTRUIR", type: "irregular", lessons: [12] },
+  { id: "grind", baseForm: "GRIND", pastSimple: "GROUND", pastParticiple: "GROUND", meaning: "MOLER", type: "irregular", lessons: [12] },
+  { id: "sort-out", baseForm: "SORT OUT", pastSimple: "SORTED OUT", pastParticiple: "SORTED OUT", meaning: "CLASIFICAR", type: "regular", lessons: [12] },
+  { id: "store", baseForm: "STORE", pastSimple: "STORED", pastParticiple: "STORED", meaning: "ALMACENAR", type: "regular", lessons: [12] },
+  { id: "switch", baseForm: "SWITCH", pastSimple: "SWITCHED", pastParticiple: "SWITCHED", meaning: "CAMBIAR", type: "regular", lessons: [12] },
+
+  // ---- Lesson 13: Gene Foods ----
+  { id: "assess", baseForm: "ASSESS", pastSimple: "ASSESSED", pastParticiple: "ASSESSED", meaning: "EVALUAR", type: "regular", lessons: [13] },
+  { id: "breed", baseForm: "BREED", pastSimple: "BRED", pastParticiple: "BRED", meaning: "CRIAR", type: "irregular", lessons: [13] },
+  { id: "disrupt", baseForm: "DISRUPT", pastSimple: "DISRUPTED", pastParticiple: "DISRUPTED", meaning: "INTERRUMPIR", type: "regular", lessons: [13] },
+  { id: "endanger", baseForm: "ENDANGER", pastSimple: "ENDANGERED", pastParticiple: "ENDANGERED", meaning: "PONER EN PELIGRO", type: "regular", lessons: [13] },
+  { id: "thank", baseForm: "THANK", pastSimple: "THANKED", pastParticiple: "THANKED", meaning: "AGRADECER", type: "regular", lessons: [13] },
+  { id: "threaten", baseForm: "THREATEN", pastSimple: "THREATENED", pastParticiple: "THREATENED", meaning: "AMENAZAR", type: "regular", lessons: [13] },
+  { id: "save", baseForm: "SAVE", pastSimple: "SAVED", pastParticiple: "SAVED", meaning: "SALVAR", type: "regular", lessons: [13] },
+  { id: "worry", baseForm: "WORRY", pastSimple: "WORRIED", pastParticiple: "WORRIED", meaning: "PREOCUPARSE", type: "regular", lessons: [13] },
+
+  // ---- Lesson 14: Lasers ----
+  { id: "bond", baseForm: "BOND", pastSimple: "BONDED", pastParticiple: "BONDED", meaning: "ADHERIR", type: "regular", lessons: [14] },
+  { id: "bounce", baseForm: "BOUNCE", pastSimple: "BOUNCED", pastParticiple: "BOUNCED", meaning: "REBOTAR", type: "regular", lessons: [14] },
+  { id: "break-up", baseForm: "BREAK UP", pastSimple: "BROKE UP", pastParticiple: "BROKEN UP", meaning: "DESINTEGRAR", type: "irregular", lessons: [11, 14] },
+  { id: "carry", baseForm: "CARRY", pastSimple: "CARRIED", pastParticiple: "CARRIED", meaning: "LLEVAR", type: "regular", lessons: [14] },
+  { id: "dig", baseForm: "DIG", pastSimple: "DUG", pastParticiple: "DUG", meaning: "CAVAR", type: "irregular", lessons: [14] },
+  { id: "fix", baseForm: "FIX", pastSimple: "FIXED", pastParticiple: "FIXED", meaning: "ARREGLAR", type: "regular", lessons: [14] },
+  { id: "give-out", baseForm: "GIVE OUT", pastSimple: "GAVE OUT", pastParticiple: "GIVEN OUT", meaning: "EMITIR", type: "irregular", lessons: [14] },
+  { id: "grow", baseForm: "GROW", pastSimple: "GREW", pastParticiple: "GROWN", meaning: "CRECER", type: "irregular", lessons: [14] },
+  { id: "map-out", baseForm: "MAP OUT", pastSimple: "MAPPED OUT", pastParticiple: "MAPPED OUT", meaning: "TRAZAR", type: "regular", lessons: [14] },
+];

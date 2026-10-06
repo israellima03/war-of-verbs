@@ -1,0 +1,27 @@
+@import "tailwindcss";
+
+/*
+  Estilos que se repiten en varias páginas.
+  Con @apply juntamos varias clases de Tailwind bajo un solo nombre.
+*/
+@layer components {
+  /* Botón tipo "píldora" para filtros y opciones (Aprender, Practicar, Examen).
+     El script de cada página le agrega o quita la clase "active". */
+  .chip {
+    @apply cursor-pointer rounded-full border border-slate-800 bg-slate-800/50 px-4 py-2 text-sm font-semibold text-slate-400 transition hover:text-blue-400;
+  }
+
+  .chip.active {
+    @apply border-blue-500/50 bg-blue-500/15 text-blue-400;
+  }
+
+  /* Botón principal azul */
+  .btn-primary {
+    @apply inline-block cursor-pointer rounded-full bg-blue-600 px-7 py-3 font-bold text-white transition hover:bg-blue-700 disabled:cursor-not-allowed disabled:opacity-50;
+  }
+
+  /* Botón secundario con borde */
+  .btn-secondary {
+    @apply inline-block cursor-pointer rounded-full border border-slate-700 px-7 py-3 font-bold text-slate-100 transition hover:border-blue-500/50 hover:text-blue-400;
+  }
+}

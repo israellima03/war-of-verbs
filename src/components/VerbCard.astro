@@ -1,0 +1,74 @@
+---
+// Componente que dibuja UNA tarjeta de verbo.
+// Recibe un verbo como "prop" y solo se encarga de mostrarlo:
+// no sabe nada de filtros ni de otros verbos, eso lo maneja la página.
+
+import type { Verb } from "../types/verb";
+import { getVerbLessons } from "../data/lessons";
+
+interface Props {
+  verb: Verb;
+}
+
+const { verb } = Astro.props;
+const isIrregular = verb.type === "irregular";
+const lessonIds = getVerbLessons(verb); // ej. [3, 4] o [0] si es básico
+const lessonText = verb.lessons ? lessonIds.map((id) => `L${id}`).join(" · ") : "Básico";
+---
+
+<!--
+  data-type="regular" | "irregular" y data-lessons="3 4" -> los usa el
+  script de la página para saber qué tarjetas mostrar u ocultar al filtrar.
+-->
+<div
+  class="verb-card rounded-2xl border border-slate-800 bg-slate-800/50 p-6 transition hover:border-blue-500/50"
+  data-type={verb.type}
+  data-lessons={lessonIds.join(" ")}
+>
+  <div class="flex items-center justify-between gap-2">
+    <!-- Etiqueta de tipo: azul para regular, rojo para irregular -->
+    <span
+      class:list={[
+        "inline-block rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide",
+        isIrregular
+          ? "bg-red-500/10 text-red-400"
+          : "bg-blue-500/10 text-blue-400",
+      ]}
+    >
+      {isIrregular ? "Irregular" : "Regular"}
+    </span>
+    <!-- Lecciones del libro donde aparece -->
+    <span class="text-xs font-semibold text-slate-500">{lessonText}</span>
+  </div>
+
+  <!--
+    verb-fields: contenedor que el script cambia entre 3 y 4 columnas
+    según el modo elegido (3 formas o 4 formas).
+  -->
+  <div class="verb-fields mt-4 grid grid-cols-3 gap-3">
+    <div>
+      <p class="text-xs uppercase text-slate-500">Base Form</p>
+      <p class="text-lg font-bold text-slate-100">{verb.baseForm}</p>
+    </div>
+
+    <div>
+      <p class="text-xs uppercase text-slate-500">Past Simple</p>
+      <p class="text-lg font-bold text-blue-400">{verb.pastSimple}</p>
+    </div>
+
+    <!--
+      participle-field: oculto por defecto (modo 3 formas).
+      El script de la página le quita "hidden" cuando el usuario
+      elige "4 Formas".
+    -->
+    <div class="participle-field hidden">
+      <p class="text-xs uppercase text-slate-500">Past Participle</p>
+      <p class="text-lg font-bold text-blue-400">{verb.pastParticiple}</p>
+    </div>
+
+    <div>
+      <p class="text-xs uppercase text-slate-500">Meaning</p>
+      <p class="text-lg font-bold text-slate-200">{verb.meaning}</p>
+    </div>
+  </div>
+</div>

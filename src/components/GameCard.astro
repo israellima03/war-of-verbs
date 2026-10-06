@@ -1,0 +1,27 @@
+---
+// Tarjeta para elegir un juego en /practicar.
+// Es un <button> (no un enlace) porque el juego se abre en la misma
+// página: el script de practicar.astro lee su data-game.
+// El ícono SVG se pasa desde afuera, dentro de <GameCard>...</GameCard>.
+
+interface Props {
+  game: string; // "ordenar", "escribir", ...
+  title: string;
+  description: string;
+}
+
+const { game, title, description } = Astro.props;
+---
+
+<button
+  type="button"
+  data-game={game}
+  class="group cursor-pointer rounded-2xl border border-slate-800 bg-slate-800/50 p-6 text-left transition hover:-translate-y-1 hover:border-blue-500/50"
+>
+  <div class="flex h-12 w-12 items-center justify-center rounded-xl bg-blue-500/10 text-blue-400">
+    <slot />
+  </div>
+  <h3 class="mt-4 text-lg font-bold text-slate-100">{title}</h3>
+  <p class="mt-2 text-sm leading-6 text-slate-400">{description}</p>
+  <span class="mt-4 inline-block text-sm font-semibold text-blue-400">Jugar →</span>
+</button>

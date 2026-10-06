@@ -1,0 +1,86 @@
+---
+// /ranking: TOP 4 y la posición del usuario.
+// Mezcla resultados de ejemplo (data/ranking.ts) con los guardados
+// en este navegador al terminar un examen.
+import Layout from "../layouts/Layout.astro";
+import RankingTable from "../components/RankingTable.astro";
+---
+
+<Layout title="Ranking" description="Ranking global de War of Verbs.">
+  <section class="bg-slate-950 px-6 py-16">
+    <div class="mx-auto max-w-3xl">
+      <div class="text-center">
+        <span class="inline-flex items-center gap-2 text-sm font-bold uppercase tracking-wider text-red-400">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M8 21h8M12 17v4M7 4h10v4a5 5 0 0 1-10 0V4Z" />
+            <path d="M7 5H4v1a4 4 0 0 0 4 4M17 5h3v1a4 4 0 0 1-4 4" />
+          </svg>
+          Competencia
+        </span>
+        <h1 class="mt-3 text-3xl font-extrabold text-slate-100 sm:text-4xl">TOP GLOBAL</h1>
+        <p class="mt-3 text-slate-400">
+          Ordenado por puntuación, luego porcentaje y luego menor tiempo.
+        </p>
+      </div>
+
+      <!-- Tu posición (el script decide qué mostrar) -->
+      <div id="my-position" class="mt-10 rounded-2xl border border-blue-500/30 bg-blue-500/10 p-6 text-center">
+        <p class="text-slate-400">Cargando tu posición…</p>
+      </div>
+
+      <div class="mt-6">
+        <RankingTable />
+      </div>
+
+      <p class="mt-4 text-center text-xs text-slate-500">
+        Por ahora el ranking usa datos de ejemplo y tus resultados guardados en este navegador.
+      </p>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import { getPlayerName, loadSavedResults, sampleRanking, sortRanking, type RankingEntry } from "../data/ranking";
+  import { formatTime } from "../data/score";
+  import { escapeHtml } from "../scripts/quiz";
+
+  const player = getPlayerName();
+  const ranking = sortRanking([...sampleRanking, ...loadSavedResults()]);
+
+  // ---- TOP 4 ----
+  const body = document.querySelector("[data-ranking-body]")!;
+  body.innerHTML = ranking.slice(0, 4).map((entry, i) => row(entry, i + 1)).join("");
+
+  function row(entry: RankingEntry, position: number): string {
+    const isMe = player !== "" && entry.name === player;
+    return `
+      <tr class="${isMe ? "bg-blue-500/10" : ""}">
+        <td class="px-4 py-4 text-lg font-extrabold ${position === 1 ? "text-red-400" : "text-slate-400"}">#${position}</td>
+        <td class="px-4 py-4 font-semibold text-slate-100">
+          ${escapeHtml(entry.name)}
+          ${isMe ? `<span class="ml-2 rounded-full bg-blue-500/15 px-2 py-0.5 text-xs text-blue-400">Tú</span>` : ""}
+        </td>
+        <td class="px-4 py-4 text-right font-bold text-blue-400">${entry.score}<span class="text-slate-500">/${entry.maxScore}</span></td>
+        <td class="px-4 py-4 text-right text-slate-100">${entry.percentage}%</td>
+        <td class="px-4 py-4 text-right text-slate-400">${formatTime(entry.timeSeconds)}</td>
+      </tr>`;
+  }
+
+  // ---- Tu posición ----
+  // findIndex devuelve el primer resultado con tu nombre, que es el mejor
+  // porque la lista ya está ordenada.
+  const myBox = document.getElementById("my-position")!;
+  const myIndex = player ? ranking.findIndex((entry) => entry.name === player) : -1;
+
+  if (myIndex === -1) {
+    myBox.innerHTML = `
+      <p class="text-slate-400">Aún no tienes resultados guardados.</p>
+      <a href="/examen" class="btn-primary mt-4">Hacer un examen</a>`;
+  } else {
+    const me = ranking[myIndex];
+    myBox.innerHTML = `
+      <p class="text-sm uppercase tracking-wider text-slate-400">Tu mejor posición, ${escapeHtml(player)}</p>
+      <p class="mt-2 text-4xl font-extrabold text-blue-400">#${myIndex + 1} <span class="text-lg text-slate-500">de ${ranking.length}</span></p>
+      <p class="mt-2 text-sm text-slate-400">${me.score}/${me.maxScore} pts · ${me.percentage}% · ${formatTime(me.timeSeconds)}</p>`;
+  }
+</script>

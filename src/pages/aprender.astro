@@ -1,0 +1,102 @@
+---
+import Layout from "../layouts/Layout.astro";
+import VerbCard from "../components/VerbCard.astro";
+import VerbFilters from "../components/VerbFilters.astro";
+import { verbs } from "../data/verbs";
+---
+
+<Layout
+  title="Aprender"
+  description="Estudia verbos regulares e irregulares en inglés."
+>
+  <section class="bg-slate-950 px-6 py-16">
+    <div class="mx-auto max-w-6xl">
+
+      <div class="text-center">
+        <h1 class="text-3xl font-extrabold text-slate-100 sm:text-4xl">
+          Aprender Verbos
+        </h1>
+        <p class="mt-3 text-slate-400">
+          Filtra por tipo y por lección, y elige cuántas formas quieres estudiar.
+        </p>
+      </div>
+
+      <!-- FILTROS -->
+      <div class="mt-10">
+        <VerbFilters />
+      </div>
+
+      <!-- LISTA DE VERBOS -->
+      <div id="verb-list" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        {verbs.map((verb) => <VerbCard verb={verb} />)}
+      </div>
+
+      <p id="empty-msg" class="mt-10 hidden text-center text-red-400">
+        No hay verbos con estos filtros.
+      </p>
+
+    </div>
+  </section>
+</Layout>
+
+<script>
+  // Este código corre en el navegador (no en el servidor de Astro).
+  // Es JavaScript simple del DOM: muestra u oculta las tarjetas que ya
+  // están en la página según los filtros elegidos.
+  import { matchesLessons } from "../data/lessons";
+  import { setupChips, setupLessonPicker, showVerbCount } from "../scripts/filters";
+
+  const cards = document.querySelectorAll<HTMLElement>(".verb-card");
+  const emptyMsg = document.getElementById("empty-msg")!;
+
+  let currentType = "all"; // "all" | "regular" | "irregular"
+  let currentMode = "3"; // "3" | "4"
+  let currentLessons: number[] = []; // [] = todas
+
+  setupChips("type-options", (value) => {
+    currentType = value;
+    applyFilters();
+  });
+  setupChips("mode-options", (value) => {
+    currentMode = value;
+    applyFilters();
+  });
+  setupLessonPicker((selected) => {
+    currentLessons = selected;
+    applyFilters();
+  });
+
+  // Vuelve a aplicar todos los filtros sobre todas las tarjetas.
+  function applyFilters() {
+    let visible = 0;
+
+    cards.forEach((card) => {
+      // --- Filtro por tipo y por lección ---
+      // data-lessons trae algo como "3 4"; lo convertimos a [3, 4].
+      const cardLessons = (card.dataset.lessons ?? "").split(" ").map(Number);
+      const show =
+        (currentType === "all" || card.dataset.type === currentType) &&
+        matchesLessons(cardLessons, currentLessons);
+      card.classList.toggle("hidden", !show);
+      if (show) visible++;
+
+      // --- Filtro por cantidad de formas ---
+      const participleField = card.querySelector(".participle-field");
+      const fieldsGrid = card.querySelector(".verb-fields");
+
+      if (participleField && fieldsGrid) {
+        const show4Forms = currentMode === "4";
+        participleField.classList.toggle("hidden", !show4Forms);
+        // 4 formas en una tarjeta angosta no caben en una fila: usamos 2x2.
+        fieldsGrid.classList.toggle("grid-cols-3", !show4Forms);
+        fieldsGrid.classList.toggle("grid-cols-2", show4Forms);
+      }
+    });
+
+    showVerbCount(visible);
+    emptyMsg.classList.toggle("hidden", visible > 0);
+  }
+
+  // Aplicamos los filtros una vez al cargar la página.
+  applyFilters();
+</script>

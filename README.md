@@ -1,49 +1,45 @@
-# Starlight Starter Kit: Basics
+# War of Verbs — at the FNI
 
-[![Built with Starlight](https://astro.badg.es/v2/built-with-starlight/tiny.svg)](https://starlight.astro.build)
+Aplicación web para aprender y practicar verbos en inglés con juegos y exámenes.
+
+Flujo: **Aprender → Practicar → Examen → Puntuación → Ranking → Mejorar**
+
+Hecha con Astro 7, TypeScript y Tailwind CSS 4. Sin login ni base de datos (por ahora).
+
+## Comandos
+
+| Comando        | Qué hace                                      |
+| :------------- | :-------------------------------------------- |
+| `yarn install` | Instala las dependencias                      |
+| `yarn dev`     | Servidor local en `http://localhost:4321`     |
+| `yarn build`   | Genera el sitio final en `./dist/`            |
+| `yarn preview` | Muestra el sitio generado antes de publicarlo |
+
+## Estructura
 
 ```
-yarn create astro@latest -- --template starlight
+src/
+├── layouts/Layout.astro        navbar, footer y <slot />
+├── pages/                      cada archivo = una ruta
+│   ├── index.astro             /            (incluye el formulario de sugerencias)
+│   ├── aprender.astro          /aprender
+│   ├── practicar.astro         /practicar   (5 juegos + pistas)
+│   ├── examen.astro            /examen
+│   └── ranking.astro           /ranking
+├── components/                 piezas reutilizables de HTML
+│   ├── VerbCard.astro
+│   ├── GameCard.astro
+│   ├── HintButton.astro
+│   ├── ScoreCard.astro
+│   └── RankingTable.astro
+├── data/
+│   ├── verbs.ts                lista de verbos
+│   ├── questions.ts            crea preguntas y pistas
+│   ├── score.ts                reglas de puntuación
+│   └── ranking.ts              datos y orden del ranking
+├── scripts/quiz.ts             dibuja preguntas en el navegador
+├── types/verb.ts               interface Verb
+└── styles/global.css           Tailwind + clases compartidas
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
-
-## 🚀 Project Structure
-
-Inside of your Astro + Starlight project, you'll see the following folders and files:
-
-```
-.
-├── public/
-├── src/
-│   ├── assets/
-│   ├── content/
-│   │   └── docs/
-│   └── content.config.ts
-├── astro.config.mjs
-├── package.json
-└── tsconfig.json
-```
-
-Starlight looks for `.md` or `.mdx` files in the `src/content/docs/` directory. Each file is exposed as a route based on its file name.
-
-Images can be added to `src/assets/` and embedded in Markdown with a relative link.
-
-Static assets, like favicons, can be placed in the `public/` directory.
-
-## 🧞 Commands
-
-All commands are run from the root of the project, from a terminal:
-
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `yarn install`             | Installs dependencies                            |
-| `yarn dev`             | Starts local dev server at `localhost:4321`      |
-| `yarn build`           | Build your production site to `./dist/`          |
-| `yarn preview`         | Preview your build locally, before deploying     |
-| `yarn astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `yarn astro -- --help` | Get help using the Astro CLI                     |
-
-## 👀 Want to learn more?
-
-Check out [Starlight’s docs](https://starlight.astro.build/), read [the Astro documentation](https://docs.astro.build), or jump into the [Astro Discord server](https://astro.build/chat).
+Para agregar verbos, edita `src/data/verbs.ts`.

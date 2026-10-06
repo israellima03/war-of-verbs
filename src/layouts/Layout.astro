@@ -1,0 +1,120 @@
+---
+// Plantilla común de TODAS las páginas: <head>, navbar, footer y un
+// <slot /> donde cada página pone su contenido.
+import "../styles/global.css";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "War of Verbs",
+  description = "Aprende, practica y domina los verbos en inglés.",
+} = Astro.props;
+
+// Enlaces del menú. Si agregas una página nueva, solo la sumas aquí.
+const links = [
+  { href: "/", label: "Inicio" },
+  { href: "/aprender", label: "Aprender" },
+  { href: "/practicar", label: "Practicar" },
+  { href: "/examen", label: "Examen" },
+  { href: "/ranking", label: "Ranking" },
+];
+
+// Ruta actual sin "/" final ("/aprender/" -> "/aprender") para saber
+// qué enlace pintar como activo.
+const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
+---
+
+<!doctype html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content={description} />
+    <meta name="theme-color" content="#0f172a" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <title>{title} | War of Verbs</title>
+  </head>
+
+  <body class="min-h-screen bg-slate-950 text-slate-100 antialiased">
+    <header class="sticky top-0 z-50 border-b border-slate-800 bg-slate-950/90 backdrop-blur">
+      <nav class="mx-auto flex h-16 max-w-7xl items-center justify-between px-6 lg:px-8">
+        <a href="/" class="text-lg font-extrabold tracking-tight text-blue-500 sm:text-xl">
+          WAR OF VERBS <span class="text-red-500">AT THE FNI</span>
+        </a>
+
+        <!-- MENÚ (pantallas medianas y grandes) -->
+        <div class="hidden items-center gap-7 md:flex">
+          {links.map((link) => (
+            <a
+              href={link.href}
+              class:list={[
+                "text-sm font-semibold transition",
+                currentPath === link.href
+                  ? "text-blue-500"
+                  : "text-slate-400 hover:text-blue-400",
+              ]}
+            >
+              {link.label}
+            </a>
+          ))}
+        </div>
+
+        <!--
+          MENÚ MÓVIL: <details> abre y cierra solo, sin JavaScript.
+          Al tocar el ícono se muestra la lista de enlaces.
+        -->
+        <details class="relative md:hidden">
+          <summary
+            class="cursor-pointer list-none rounded-lg p-2 text-slate-400 hover:text-blue-400 [&::-webkit-details-marker]:hidden"
+            aria-label="Abrir menú"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M4 7h16M4 12h16M4 17h16" />
+            </svg>
+          </summary>
+          <div class="absolute right-0 mt-2 flex w-48 flex-col rounded-xl border border-slate-800 bg-slate-900 p-2 shadow-lg">
+            {links.map((link) => (
+              <a
+                href={link.href}
+                class:list={[
+                  "rounded-lg px-3 py-2 text-sm font-semibold",
+                  currentPath === link.href
+                    ? "bg-blue-500/10 text-blue-400"
+                    : "text-slate-400 hover:text-blue-400",
+                ]}
+              >
+                {link.label}
+              </a>
+            ))}
+          </div>
+        </details>
+      </nav>
+    </header>
+
+    <main>
+      <slot />
+    </main>
+
+    <footer class="border-t border-slate-800 bg-slate-950">
+      <div class="mx-auto flex max-w-7xl flex-col items-center justify-between gap-4 px-6 py-8 text-center sm:flex-row sm:text-left">
+        <div>
+          <a href="/" class="font-extrabold text-blue-500">
+            WAR OF VERBS <span class="text-red-500">AT THE FNI</span>
+          </a>
+          <p class="mt-1 text-sm text-slate-400">
+            Aprende. Practica. Domina. Muéstrale quién manda a la Lic.
+          </p>
+        </div>
+        <div class="text-sm text-slate-500">
+          <a href="/#sugerencias" class="font-semibold text-blue-400 hover:text-blue-300">
+            Enviar sugerencia
+          </a>
+          <p class="mt-1">© 2026 Lima Tech · cel: 68319277</p>
+        </div>
+      </div>
+    </footer>
+  </body>
+</html>

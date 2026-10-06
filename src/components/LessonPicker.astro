@@ -1,0 +1,24 @@
+---
+// Selector de lecciones del libro SHORTCUT. Se puede elegir una,
+// varias (L1 + L2 + L3...) o "Todas".
+// Se usa en Aprender, Practicar y Examen. La lógica de los clics está
+// en setupLessonPicker() de src/scripts/filters.ts.
+import { lessons } from "../data/lessons";
+---
+
+<div data-lesson-picker>
+  <p class="text-sm font-bold uppercase tracking-wider text-slate-400">Lecciones</p>
+  <div class="mt-3 flex flex-wrap gap-2">
+    <button type="button" data-lesson="all" class="chip active">Todas</button>
+    {lessons.map((lesson) => (
+      <button type="button" data-lesson={lesson.id} title={lesson.title} class="chip px-3">
+        {lesson.id === 0 ? "Básicos" : `L${lesson.id}`}
+      </button>
+    ))}
+  </div>
+  <!-- El script escribe aquí los nombres elegidos y cuántos verbos hay -->
+  <p class="mt-2 text-xs text-slate-500">
+    <span data-lesson-names>Todas las lecciones</span> ·
+    <span data-verb-count class="font-semibold text-blue-400"></span>
+  </p>
+</div>

@@ -1,0 +1,319 @@
+---
+// /examen: 3 pantallas en la misma página, que se muestran u ocultan:
+//   1) #setup   -> configurar el examen
+//   2) #quiz    -> responder las preguntas (con cronómetro)
+//   3) #result  -> puntuación, guardar en el ranking y ver respuestas
+import Layout from "../layouts/Layout.astro";
+import HintButton from "../components/HintButton.astro";
+import ScoreCard from "../components/ScoreCard.astro";
+import VerbFilters from "../components/VerbFilters.astro";
+
+const counts = [10, 20, 30, 50, 100];
+---
+
+<Layout title="Examen" description="Evalúa cuánto sabes de verbos en inglés.">
+  <section class="bg-slate-950 px-6 py-16">
+    <div class="mx-auto max-w-3xl">
+
+      <!-- 1) CONFIGURACIÓN -->
+      <div id="setup">
+        <div class="text-center">
+          <h1 class="text-3xl font-extrabold text-slate-100 sm:text-4xl">Examen</h1>
+          <p class="mt-3 text-slate-400">
+            Preguntas mezcladas: escribir, seleccionar, completar y ordenar.
+          </p>
+        </div>
+
+        <!-- Tipo, formas y lecciones + (dentro del slot) cantidad y botón -->
+        <div class="mt-10">
+          <VerbFilters>
+            <div>
+              <p class="text-sm font-bold uppercase tracking-wider text-slate-400">Cantidad de preguntas</p>
+              <div id="count-options" class="mt-3 flex flex-wrap gap-2">
+                {counts.map((n, i) => (
+                  <button type="button" data-value={n} class:list={["chip", { active: i === 0 }]}>{n}</button>
+                ))}
+              </div>
+              <p class="mt-2 text-xs text-slate-500">
+                Si eliges más preguntas que verbos, algunos verbos se repiten.
+              </p>
+            </div>
+
+            <p id="setup-error" class="hidden text-sm font-semibold text-red-400">
+              No hay verbos con estos filtros. Elige otra lección o tipo.
+            </p>
+            <button id="start-btn" type="button" class="btn-primary w-full">EMPEZAR EXAMEN</button>
+          </VerbFilters>
+        </div>
+      </div>
+
+      <!-- 2) PREGUNTAS -->
+      <div id="quiz" class="hidden">
+        <div class="mb-4 flex justify-end">
+          <button id="cancel-btn" type="button"
+            class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-red-500/50 hover:text-red-400">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 6 6 18M6 6l12 12" />
+            </svg>
+            Salir del examen
+          </button>
+        </div>
+        <div class="flex items-center justify-between text-sm text-slate-400">
+          <span id="progress-text">Pregunta 1 de 10</span>
+          <span class="inline-flex items-center gap-1 font-bold text-slate-100">
+            <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="12" cy="13" r="8" />
+              <path d="M12 9v4l2 2M10 2h4" />
+            </svg>
+            <span id="timer">00:00</span>
+          </span>
+        </div>
+        <!-- barra de progreso -->
+        <div class="mt-3 h-2 overflow-hidden rounded-full bg-slate-800">
+          <div id="progress-bar" class="h-full w-0 bg-blue-500 transition-all"></div>
+        </div>
+
+        <div class="mt-6 rounded-2xl border border-slate-800 bg-slate-800/50 p-6 sm:p-8">
+          <p id="kind-label" class="text-sm font-bold text-blue-400"></p>
+          <div id="question-box" class="mt-4"></div>
+          <HintButton />
+        </div>
+      </div>
+
+      <!-- 3) RESULTADO -->
+      <div id="result" class="hidden">
+        <h1 class="mb-8 text-center text-3xl font-extrabold text-slate-100 sm:text-4xl">Resultado</h1>
+
+        <ScoreCard />
+
+        <!-- Guardar en el ranking -->
+        <form id="name-form" class="mt-6 flex flex-col gap-3 rounded-2xl border border-slate-800 bg-slate-800/50 p-6 sm:flex-row sm:items-center">
+          <label for="player-name" class="text-sm font-semibold text-slate-400">Tu nombre para el ranking:</label>
+          <input id="player-name" required maxlength="30" autocomplete="nickname"
+            class="min-w-0 flex-1 rounded-xl border border-slate-700 bg-slate-900 px-4 py-2 text-slate-100 focus:border-blue-500 focus:outline-none" />
+          <button type="submit" class="btn-primary rounded-xl py-2">Guardar</button>
+        </form>
+        <p id="saved-msg" class="mt-3 hidden text-center text-sm text-blue-400">
+          ¡Guardado! <a href="/ranking" class="font-bold underline">Ver ranking →</a>
+        </p>
+
+        <div class="mt-8 flex flex-wrap justify-center gap-3">
+          <button id="retry-btn" type="button" class="btn-primary">Volver a intentar</button>
+          <button id="review-btn" type="button" class="btn-secondary">Ver respuestas</button>
+          <a href="/" class="btn-secondary">Volver al inicio</a>
+        </div>
+
+        <ol id="review-list" class="mt-8 hidden space-y-3"></ol>
+      </div>
+
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import {
+    FORM_LABELS,
+    KIND_LABELS,
+    createExam,
+    filterVerbs,
+    getHints,
+    type Mode,
+    type Question,
+    type TypeFilter,
+  } from "../data/questions";
+  import { POINTS_CORRECT, formatTime, percentage, questionPoints } from "../data/score";
+  import { getPlayerName, saveResult, type RankingEntry } from "../data/ranking";
+  import { escapeHtml, renderQuestion, setupHint } from "../scripts/quiz";
+  import { setupChips, setupLessonPicker, showVerbCount } from "../scripts/filters";
+
+  // Lo que respondió el usuario en cada pregunta (para "Ver respuestas").
+  interface ExamAnswer {
+    question: Question;
+    userAnswer: string;
+    correct: boolean;
+    points: number;
+  }
+
+  // ---- Elementos ----
+  const setup = document.getElementById("setup")!;
+  const quiz = document.getElementById("quiz")!;
+  const result = document.getElementById("result")!;
+  const questionBox = document.getElementById("question-box")!;
+  const progressText = document.getElementById("progress-text")!;
+  const progressBar = document.getElementById("progress-bar")!;
+  const kindLabel = document.getElementById("kind-label")!;
+  const timer = document.getElementById("timer")!;
+  const nameForm = document.getElementById("name-form") as HTMLFormElement;
+  const nameInput = document.getElementById("player-name") as HTMLInputElement;
+  const savedMsg = document.getElementById("saved-msg")!;
+  const reviewList = document.getElementById("review-list")!;
+  const hint = setupHint(document.querySelector<HTMLElement>(".hint-box")!);
+
+  // ---- Configuración elegida ----
+  let count = 10;
+  let type: TypeFilter = "all";
+  let mode: Mode = "3";
+  let lessons: number[] = []; // [] = todas las lecciones
+  const setupError = document.getElementById("setup-error")!;
+
+  // Al cambiar el tipo o las lecciones, mostramos cuántos verbos entran.
+  function updateCount() {
+    showVerbCount(filterVerbs(type, lessons).length);
+    setupError.classList.add("hidden");
+  }
+
+  setupChips("count-options", (value) => (count = Number(value)));
+  setupChips("type-options", (value) => {
+    type = value as TypeFilter;
+    updateCount();
+  });
+  setupChips("mode-options", (value) => (mode = value as Mode));
+  setupLessonPicker((selected) => {
+    lessons = selected;
+    updateCount();
+  });
+  updateCount();
+
+  // ---- Estado del examen ----
+  let questions: Question[] = [];
+  let answers: ExamAnswer[] = [];
+  let current = 0;
+  let startTime = 0;
+  let seconds = 0;
+  let timerId = 0;
+  let lastResult: RankingEntry | null = null;
+
+  // Muestra solo una de las 3 pantallas.
+  function showScreen(screen: HTMLElement) {
+    [setup, quiz, result].forEach((s) => s.classList.toggle("hidden", s !== screen));
+    window.scrollTo({ top: 0 });
+  }
+
+  document.getElementById("start-btn")!.addEventListener("click", startExam);
+  document.getElementById("retry-btn")!.addEventListener("click", startExam);
+  // SALIR del examen: pedimos confirmación porque se pierde el avance.
+  document.getElementById("cancel-btn")!.addEventListener("click", () => {
+    if (!confirm("¿Seguro que quieres salir? Se perderá el avance de este examen.")) return;
+    clearInterval(timerId);
+    showScreen(setup);
+  });
+  document.getElementById("review-btn")!.addEventListener("click", () => {
+    reviewList.classList.toggle("hidden");
+  });
+
+  function startExam() {
+    questions = createExam(count, type, mode, lessons);
+    if (questions.length === 0) {
+      // No hay verbos con esos filtros: volvemos a la configuración.
+      showScreen(setup);
+      setupError.classList.remove("hidden");
+      return;
+    }
+    answers = [];
+    current = 0;
+    startTime = Date.now();
+    clearInterval(timerId);
+    timerId = window.setInterval(updateTimer, 1000);
+    updateTimer();
+    showScreen(quiz);
+    showQuestion();
+  }
+
+  function updateTimer() {
+    seconds = Math.floor((Date.now() - startTime) / 1000);
+    timer.textContent = formatTime(seconds);
+  }
+
+  function showQuestion() {
+    const question = questions[current];
+    progressText.textContent = `Pregunta ${current + 1} de ${questions.length}`;
+    progressBar.style.width = `${(current / questions.length) * 100}%`;
+    kindLabel.textContent = KIND_LABELS[question.kind];
+    hint.reset(getHints(question));
+
+    renderQuestion(questionBox, question, (userAnswer, correct) => {
+      answers.push({ question, userAnswer, correct, points: questionPoints(correct, hint.getUsed()) });
+      current++;
+      // Pequeña pausa para que se vea la opción elegida antes de seguir.
+      setTimeout(() => {
+        if (current < questions.length) showQuestion();
+        else finishExam();
+      }, 300);
+    });
+  }
+
+  function finishExam() {
+    clearInterval(timerId);
+    updateTimer();
+
+    const score = answers.reduce((sum, a) => sum + a.points, 0);
+    const correctCount = answers.filter((a) => a.correct).length;
+    lastResult = {
+      name: "",
+      score,
+      maxScore: questions.length * POINTS_CORRECT,
+      percentage: percentage(correctCount, questions.length),
+      timeSeconds: seconds,
+      questions: questions.length,
+    };
+
+    // Rellenamos el ScoreCard
+    setStat("score", String(score));
+    setStat("max", String(lastResult.maxScore));
+    setStat("correct", `${correctCount}/${questions.length}`);
+    setStat("percent", `${lastResult.percentage}%`);
+    setStat("time", formatTime(seconds));
+    setStat("questions", String(questions.length));
+
+    // Formulario de nombre listo para un nuevo guardado
+    nameInput.value = getPlayerName();
+    nameInput.disabled = false;
+    nameForm.querySelector("button")!.disabled = false;
+    savedMsg.classList.add("hidden");
+
+    renderReview();
+    reviewList.classList.add("hidden");
+    showScreen(result);
+  }
+
+  function setStat(key: string, value: string) {
+    document.querySelector(`[data-stat="${key}"]`)!.textContent = value;
+  }
+
+  // Guardar el resultado con el nombre del usuario.
+  nameForm.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const name = nameInput.value.trim();
+    if (!name || !lastResult) return;
+    saveResult({ ...lastResult, name });
+    nameInput.disabled = true;
+    nameForm.querySelector("button")!.disabled = true;
+    savedMsg.classList.remove("hidden");
+  });
+
+  // Texto corto de cada pregunta para la lista de respuestas.
+  function summary(q: Question): string {
+    if (q.kind === "ordenar") return `Ordenar ${q.verb.baseForm}: ${q.forms.map((f) => FORM_LABELS[f]).join(" → ")}`;
+    if (q.kind === "completar") return q.forms.map((f) => (f === q.target ? "___" : q.verb[f])).join(" · ");
+    return `${q.verb.baseForm} → ${FORM_LABELS[q.target]}`;
+  }
+
+  function renderReview() {
+    reviewList.innerHTML = answers
+      .map(
+        (a, i) => `
+        <li class="rounded-xl border ${a.correct ? "border-slate-800" : "border-red-500/40"} bg-slate-800/50 p-4">
+          <div class="flex justify-between text-xs uppercase tracking-wide text-slate-500">
+            <span>#${i + 1} · ${KIND_LABELS[a.question.kind]}</span>
+            <span class="${a.correct ? "text-blue-400" : "text-red-400"}">${a.correct ? `+${a.points}` : "0"} pts</span>
+          </div>
+          <p class="mt-2 font-semibold text-slate-100">${summary(a.question)}</p>
+          <p class="mt-1 text-sm text-slate-400">
+            Tu respuesta: <span class="font-bold ${a.correct ? "text-blue-400" : "text-red-400"}">${escapeHtml(a.userAnswer.toUpperCase())}</span>
+          </p>
+          ${a.correct ? "" : `<p class="text-sm text-slate-400">Correcta: <span class="font-bold text-blue-400">${a.question.answer}</span></p>`}
+        </li>`,
+      )
+      .join("");
+  }
+</script>

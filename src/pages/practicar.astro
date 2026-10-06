@@ -1,0 +1,355 @@
+---
+// /practicar: elegir un juego y jugar rondas sin límite.
+// Los juegos ordenar/escribir/seleccionar/completar usan la lógica
+// compartida (data/questions.ts + scripts/quiz.ts). MEMORIA vive aquí
+// porque solo existe en esta página.
+import Layout from "../layouts/Layout.astro";
+import GameCard from "../components/GameCard.astro";
+import HintButton from "../components/HintButton.astro";
+import VerbFilters from "../components/VerbFilters.astro";
+---
+
+<Layout title="Practicar" description="Practica los verbos en inglés con juegos.">
+  <section class="bg-slate-950 px-6 py-16">
+    <div class="mx-auto max-w-6xl">
+      <div class="text-center">
+        <h1 class="text-3xl font-extrabold text-slate-100 sm:text-4xl">Practicar</h1>
+        <p class="mt-3 text-slate-400">
+          Elige qué verbos y cuántas formas, y luego un juego.
+        </p>
+      </div>
+
+      <!--
+        FILTROS (los mismos de Aprender). Se pueden cambiar también
+        mientras juegas: la pregunta se actualiza al instante.
+      -->
+      <div class="mt-10">
+        <VerbFilters />
+      </div>
+
+      <!-- ELEGIR JUEGO -->
+      <div id="game-picker" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <GameCard game="ordenar" title="Ordenar" description="Las formas llegan desordenadas: ponlas en el orden correcto.">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M7 20V4M7 4 4 7M7 4l3 3M17 4v16M17 20l-3-3M17 20l3-3" />
+          </svg>
+        </GameCard>
+
+        <GameCard game="escribir" title="Escribir" description="Ves la Base Form y escribes la forma que falta.">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M4 20h4L19 9l-4-4L4 16v4Z" />
+            <path d="m13.5 6.5 4 4" />
+          </svg>
+        </GameCard>
+
+        <GameCard game="seleccionar" title="Seleccionar" description="Elige la respuesta correcta entre 4 opciones.">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="12" r="9" />
+            <path d="m8.5 12 2.5 2.5 4.5-5" />
+          </svg>
+        </GameCard>
+
+        <GameCard game="completar" title="Completar" description="Falta una forma en la fila del verbo: complétala.">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="6" width="18" height="12" rx="2" />
+            <path d="M8 14h8" />
+          </svg>
+        </GameCard>
+
+        <GameCard game="memoria" title="Memoria" description="Voltea cartas y empareja cada verbo con su otra forma.">
+          <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+            <rect x="3" y="3" width="7" height="7" rx="1.5" />
+            <rect x="14" y="3" width="7" height="7" rx="1.5" />
+            <rect x="3" y="14" width="7" height="7" rx="1.5" />
+            <rect x="14" y="14" width="7" height="7" rx="1.5" />
+          </svg>
+        </GameCard>
+      </div>
+
+      <!-- ZONA DE JUEGO (oculta hasta elegir un juego) -->
+      <div id="game-area" class="mx-auto mt-10 hidden max-w-3xl scroll-mt-20">
+        <div class="rounded-2xl border border-slate-800 bg-slate-800/50 p-6 sm:p-8">
+          <!-- Encabezado del juego: título, puntos y botón SALIR -->
+          <div class="flex flex-wrap items-start justify-between gap-4">
+            <div>
+              <h2 id="game-title" class="text-xl font-bold text-slate-100"></h2>
+              <p class="mt-1 text-sm text-slate-400">
+                Puntos: <strong id="score" class="text-blue-400">0</strong>
+                · Correctas: <span id="correct" class="text-slate-100">0</span>/<span id="answered">0</span>
+              </p>
+            </div>
+            <button id="exit-btn" type="button"
+              class="inline-flex cursor-pointer items-center gap-2 rounded-full border border-slate-700 px-4 py-2 text-sm font-semibold text-slate-300 transition hover:border-red-500/50 hover:text-red-400">
+              <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M18 6 6 18M6 6l12 12" />
+              </svg>
+              Salir del juego
+            </button>
+          </div>
+
+          <div id="question-box" class="mt-6"></div>
+
+          <HintButton />
+
+          <p id="feedback" class="mt-6 min-h-6 font-semibold"></p>
+          <button id="next-btn" type="button" class="btn-primary mt-4 hidden">Siguiente →</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</Layout>
+
+<script>
+  import {
+    FORM_LABELS,
+    createQuestion,
+    filterVerbs,
+    getForms,
+    getHints,
+    getWordHints,
+    pickRandom,
+    shuffle,
+    type Mode,
+    type QuestionKind,
+    type TypeFilter,
+  } from "../data/questions";
+  import type { Verb } from "../types/verb";
+  import { questionPoints } from "../data/score";
+  import { renderQuestion, setupHint } from "../scripts/quiz";
+  import { setupChips, setupLessonPicker, showVerbCount } from "../scripts/filters";
+
+  // ---- Elementos de la página ----
+  const picker = document.getElementById("game-picker")!;
+  const area = document.getElementById("game-area")!;
+  const title = document.getElementById("game-title")!;
+  const questionBox = document.getElementById("question-box")!;
+  const feedback = document.getElementById("feedback")!;
+  const nextBtn = document.getElementById("next-btn")!;
+  const scoreEl = document.getElementById("score")!;
+  const correctEl = document.getElementById("correct")!;
+  const answeredEl = document.getElementById("answered")!;
+  const hint = setupHint(document.querySelector<HTMLElement>(".hint-box")!);
+
+  const GAME_TITLES: Record<string, string> = {
+    ordenar: "Ordenar",
+    escribir: "Escribir",
+    seleccionar: "Seleccionar",
+    completar: "Completar",
+    memoria: "Memoria",
+  };
+
+  // ---- Estado del juego ----
+  let currentType: TypeFilter = "all";
+  let currentMode: Mode = "3";
+  let currentLessons: number[] = []; // [] = todas las lecciones
+  let currentGame = ""; // "" = no se está jugando
+  let score = 0;
+  let answered = 0;
+  let correctCount = 0;
+
+  // Cada vez que cambia un filtro: actualizamos el contador de verbos y,
+  // si hay un juego abierto, cargamos una pregunta nueva con los filtros
+  // nuevos (por ejemplo, si te olvidaste de poner "4 Formas").
+  function onFiltersChange() {
+    showVerbCount(filterVerbs(currentType, currentLessons).length);
+    if (currentGame !== "") nextRound();
+  }
+
+  setupChips("type-options", (value) => {
+    currentType = value as TypeFilter;
+    onFiltersChange();
+  });
+  setupChips("mode-options", (value) => {
+    currentMode = value as Mode;
+    onFiltersChange();
+  });
+  setupLessonPicker((selected) => {
+    currentLessons = selected;
+    onFiltersChange();
+  });
+  showVerbCount(filterVerbs(currentType, currentLessons).length);
+
+  // Elegir un juego: ocultamos las tarjetas y mostramos la zona de juego.
+  document.querySelectorAll<HTMLButtonElement>("[data-game]").forEach((card) => {
+    card.addEventListener("click", () => {
+      currentGame = card.dataset.game ?? "";
+      score = 0;
+      answered = 0;
+      correctCount = 0;
+      updateScore();
+      title.textContent = GAME_TITLES[currentGame];
+      picker.classList.add("hidden");
+      area.classList.remove("hidden");
+      area.scrollIntoView({ behavior: "smooth" });
+      nextRound();
+    });
+  });
+
+  // SALIR: cerramos el juego y volvemos a mostrar la lista de juegos.
+  document.getElementById("exit-btn")!.addEventListener("click", () => {
+    currentGame = "";
+    questionBox.innerHTML = "";
+    questionBox.onclick = null;
+    area.classList.add("hidden");
+    picker.classList.remove("hidden");
+  });
+
+  nextBtn.addEventListener("click", nextRound);
+
+  function updateScore() {
+    scoreEl.textContent = String(score);
+    correctEl.textContent = String(correctCount);
+    answeredEl.textContent = String(answered);
+  }
+
+  function addResult(correct: boolean, points: number) {
+    answered++;
+    if (correct) correctCount++;
+    score += points;
+    updateScore();
+  }
+
+  // Muestra un mensaje en azul (bien) o rojo (mal).
+  function setFeedback(text: string, good: boolean) {
+    feedback.textContent = text;
+    feedback.className = `mt-6 min-h-6 font-semibold ${good ? "text-blue-400" : "text-red-400"}`;
+  }
+
+  // Nueva ronda del juego actual (usa los filtros vigentes).
+  function nextRound() {
+    feedback.textContent = "";
+    nextBtn.classList.add("hidden");
+
+    const pool = filterVerbs(currentType, currentLessons);
+    if (pool.length === 0) {
+      questionBox.onclick = null;
+      questionBox.innerHTML = `<p class="text-red-400">No hay verbos con estos filtros. Prueba con otra lección o tipo.</p>`;
+      hint.reset([]); // sin pistas
+      return;
+    }
+
+    if (currentGame === "memoria") {
+      startMemory(pool);
+      return;
+    }
+
+    const verb = pickRandom(pool);
+    const question = createQuestion(currentGame as QuestionKind, verb, currentMode);
+    hint.reset(getHints(question));
+
+    renderQuestion(questionBox, question, (_userAnswer, correct) => {
+      const points = questionPoints(correct, hint.getUsed());
+      addResult(correct, points);
+      hint.disable();
+      if (correct) setFeedback(`¡Correcto! +${points} puntos`, true);
+      else setFeedback(`Incorrecto. La respuesta era: ${question.answer}`, false);
+      nextBtn.classList.remove("hidden");
+      nextBtn.focus();
+    });
+  }
+
+  // ---------- JUEGO DE MEMORIA ----------
+  // 6 verbos = 6 parejas = 12 cartas.
+  // Cada pareja: la Base Form (GO) y otra forma del mismo verbo (WENT, GONE o IR).
+  function startMemory(pool: Verb[]) {
+    const otherForms = getForms(currentMode).filter((form) => form !== "baseForm");
+    const pairs = shuffle(pool)
+      .slice(0, 6)
+      .map((verb, id) => ({ id, verb, target: pickRandom(otherForms), matched: false }));
+
+    const cards = shuffle(
+      pairs.flatMap((pair) => [
+        { pairId: pair.id, label: FORM_LABELS.baseForm, text: pair.verb.baseForm },
+        { pairId: pair.id, label: FORM_LABELS[pair.target], text: pair.verb[pair.target] },
+      ]),
+    );
+
+    let flipped: number[] = []; // cartas boca arriba que aún no forman pareja
+    let locked = false; // true mientras se ven 2 cartas equivocadas
+
+    questionBox.innerHTML = `
+      <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Encuentra las parejas</p>
+      <div class="mt-4 grid grid-cols-3 gap-3 sm:grid-cols-4">
+        ${cards
+          .map(
+            (_card, i) => `
+            <button type="button" data-card="${i}"
+              class="flex h-24 cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900 p-2 text-center transition hover:border-blue-500/50">
+              ${backFace()}
+            </button>`,
+          )
+          .join("")}
+      </div>`;
+
+    // Pistas para la primera pareja que falta encontrar.
+    // (Si usas pistas, se descuentan de la siguiente pareja que encuentres.)
+    function hintNextPair() {
+      const pair = pairs.find((p) => !p.matched);
+      if (!pair) return;
+      hint.reset(getWordHints(pair.verb, pair.target).map((h) => `${pair.verb.baseForm} → ${h}`));
+    }
+    hintNextPair();
+
+    const cardButton = (i: number) =>
+      questionBox.querySelector<HTMLButtonElement>(`[data-card="${i}"]`)!;
+
+    questionBox.onclick = (event) => {
+      const button = (event.target as HTMLElement).closest<HTMLButtonElement>("[data-card]");
+      if (!button || locked || button.disabled) return;
+      const index = Number(button.dataset.card);
+      if (flipped.includes(index)) return;
+
+      // Voltear la carta
+      const card = cards[index];
+      button.innerHTML = `
+        <span class="text-xs uppercase text-slate-500">${card.label}</span>
+        <span class="mt-1 break-words text-sm font-bold text-slate-100 sm:text-base">${card.text}</span>`;
+      flipped.push(index);
+      if (flipped.length < 2) return;
+
+      const [a, b] = flipped;
+      const buttonA = cardButton(a);
+      const buttonB = cardButton(b);
+
+      if (cards[a].pairId === cards[b].pairId) {
+        // ¡Pareja! Quedan boca arriba en azul.
+        [buttonA, buttonB].forEach((btn) => {
+          btn.disabled = true;
+          btn.classList.replace("border-slate-800", "border-blue-500");
+        });
+        pairs[cards[a].pairId].matched = true;
+        const points = questionPoints(true, hint.getUsed());
+        addResult(true, points);
+        setFeedback(`¡Pareja! +${points} puntos`, true);
+        flipped = [];
+
+        if (pairs.every((p) => p.matched)) {
+          hint.disable();
+          setFeedback("¡Tablero completo! Muy bien.", true);
+          nextBtn.classList.remove("hidden");
+        } else {
+          hintNextPair();
+        }
+      } else {
+        // No son pareja: se ven en rojo un momento y se vuelven a tapar.
+        addResult(false, 0);
+        setFeedback("No son pareja. ¡Intenta otra vez!", false);
+        locked = true;
+        [buttonA, buttonB].forEach((btn) => btn.classList.replace("border-slate-800", "border-red-500"));
+        setTimeout(() => {
+          [buttonA, buttonB].forEach((btn) => {
+            btn.classList.replace("border-red-500", "border-slate-800");
+            btn.innerHTML = backFace();
+          });
+          flipped = [];
+          locked = false;
+        }, 900);
+      }
+    };
+  }
+
+  // Cara de una carta tapada
+  function backFace() {
+    return `<span class="text-2xl font-bold text-slate-600">?</span>`;
+  }
+</script>
