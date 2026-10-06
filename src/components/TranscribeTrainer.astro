@@ -13,7 +13,7 @@ const repOptions = [1, 2, 3, 4, 5];
   <div data-tr-setup class="mx-auto max-w-3xl rounded-2xl border border-slate-800 bg-slate-800/50 p-6 sm:p-8">
     <h2 class="text-xl font-bold text-slate-100">Transcribir</h2>
     <p class="mt-2 text-slate-400">
-      Copia cada verbo varias veces viendo su tarjeta. Al final, solo verás la
+      Copia cada verbo varias veces (la respuesta está encima de cada campo). Al final, solo verás la
       <strong class="text-slate-100">Base Form</strong> y tendrás que escribir el resto de memoria.
     </p>
 
@@ -53,17 +53,17 @@ const repOptions = [1, 2, 3, 4, 5];
       <div data-tr-bar class="h-full w-0 bg-blue-500 transition-all"></div>
     </div>
 
-    <!-- Tarjeta del verbo (la dibuja el script) -->
+    <!-- Tipo y lecciones del verbo (lo dibuja el script) -->
     <div data-tr-card class="mt-6"></div>
 
     <!-- Campos para transcribir -->
-    <form data-tr-form class="mt-6 rounded-2xl border border-slate-800 bg-slate-800/50 p-6">
+    <form data-tr-form class="mt-3 rounded-2xl border border-slate-800 bg-slate-800/50 p-6">
       <p class="text-xs font-bold uppercase tracking-wider text-slate-500">Escribe las formas</p>
       <p class="mt-1 text-xs text-slate-500">
         Pulsa <kbd class="rounded border border-slate-700 px-1.5 text-slate-300">Enter</kbd>
         para pasar al siguiente campo. Solo avanzas si está bien escrito.
       </p>
-      <div data-tr-fields class="mt-4 grid gap-4 sm:grid-cols-2"></div>
+      <div data-tr-fields class="mt-4 space-y-4"></div>
       <button data-tr-check type="submit" class="btn-primary mt-6 rounded-xl">Comprobar</button>
       <p data-tr-feedback class="mt-4 min-h-6 font-semibold"></p>
     </form>

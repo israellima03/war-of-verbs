@@ -123,7 +123,9 @@ export function setupTranscribe(getFilters: () => Filters) {
 
   const isMemoryTest = () => rep > reps;
 
-  // Dibuja la tarjeta y los campos del paso actual.
+  // Dibuja los campos del paso actual. Cada campo muestra ENCIMA el valor
+  // que hay que copiar (ej. "Base Form: STATE"), así no tienes que subir
+  // la vista para mirar una tarjeta.
   function renderStep() {
     stepToken++;
     const verb = queue[index];
@@ -131,56 +133,44 @@ export function setupTranscribe(getFilters: () => Filters) {
     const memory = isMemoryTest();
 
     progressText.textContent = `Verbo ${index + 1} de ${queue.length}`;
-    stepText.textContent = memory ? "Prueba de memoria: escribe sin ver la tarjeta" : `Copia ${rep} de ${reps}`;
+    stepText.textContent = memory ? "Prueba de memoria: escribe sin mirar" : `Copia ${rep} de ${reps}`;
     stepText.className = `text-lg font-bold ${memory ? "text-red-400" : "text-blue-400"}`;
     progressBar.style.width = `${(index / queue.length) * 100}%`;
 
-    // --- Tarjeta (en la prueba de memoria solo se ve la Base Form) ---
+    // --- Línea pequeña con el tipo y las lecciones del verbo ---
     const isIrregular = verb.type === "irregular";
     const lessonText = verb.lessons ? getVerbLessons(verb).map((id) => `L${id}`).join(" · ") : "Básico";
-    const columns = forms.length === 4 ? "grid-cols-2 sm:grid-cols-4" : "grid-cols-3";
-    const cells = forms
-      .map((form) => {
-        const hidden = memory && form !== "baseForm";
-        return `
-          <div>
-            <p class="text-xs uppercase text-slate-500">${FORM_LABELS[form]}</p>
-            <p class="break-words text-lg font-bold sm:text-xl ${hidden ? "text-slate-600" : form === "baseForm" ? "text-slate-100" : "text-blue-400"}">
-              ${hidden ? "?" : verb[form]}
-            </p>
-          </div>`;
-      })
-      .join("");
-
     cardBox.innerHTML = `
-      <div class="rounded-2xl border ${memory ? "border-red-500/40" : "border-blue-500/40"} bg-slate-800/50 p-6">
-        <div class="flex items-center justify-between gap-2">
-          <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${isIrregular ? "bg-red-500/10 text-red-400" : "bg-blue-500/10 text-blue-400"}">
-            ${isIrregular ? "Irregular" : "Regular"}
-          </span>
-          <span class="text-xs font-semibold text-slate-500">${lessonText}</span>
-        </div>
-        <div class="mt-4 grid gap-3 ${columns}">${cells}</div>
+      <div class="flex items-center gap-3">
+        <span class="rounded-full px-3 py-1 text-xs font-bold uppercase tracking-wide ${isIrregular ? "bg-red-500/10 text-red-400" : "bg-blue-500/10 text-blue-400"}">
+          ${isIrregular ? "Irregular" : "Regular"}
+        </span>
+        <span class="text-xs font-semibold text-slate-500">${lessonText}</span>
       </div>`;
 
     // --- Campos para escribir ---
-    // En la prueba de memoria la Base Form ya viene escrita (es la pista).
+    // Copias: encima de cada campo está la respuesta ("Past Simple: STATED").
+    // Prueba de memoria: la Base Form viene escrita y las demás muestran "?".
     fieldsBox.innerHTML = forms
-      .map((form) =>
-        memory && form === "baseForm"
-          ? `
+      .map((form) => {
+        if (memory && form === "baseForm") {
+          return `
           <div>
             <p class="text-sm font-semibold text-slate-400">${FORM_LABELS[form]}</p>
             <p class="mt-1 rounded-xl border border-slate-800 bg-slate-900 px-4 py-3 text-lg font-bold text-slate-100">${verb.baseForm}</p>
-          </div>`
-          : `
+          </div>`;
+        }
+        const value = memory
+          ? `<span class="text-slate-600">?</span>`
+          : `<span class="text-blue-400">${verb[form]}</span>`;
+        return `
           <label class="block">
-            <span class="text-sm font-semibold text-slate-400">${FORM_LABELS[form]}</span>
+            <span class="text-base font-semibold text-slate-400">${FORM_LABELS[form]}: <strong class="text-lg">${value}</strong></span>
             <input data-form="${form}" autocomplete="off" spellcheck="false"
               class="mt-1 w-full rounded-xl border border-slate-700 bg-slate-900 px-4 py-3 text-lg font-bold uppercase text-slate-100 focus:outline-none disabled:opacity-70" />
             <span data-answer class="mt-1 block text-sm text-blue-400"></span>
-          </label>`,
-      )
+          </label>`;
+      })
       .join("");
 
     feedback.textContent = "";
