@@ -1,7 +1,11 @@
 ---
+// /aprender tiene 2 formas de estudiar, con los mismos filtros:
+//   - Tarjetas: ver todos los verbos.
+//   - Transcribir: copiar cada verbo varias veces y luego escribirlo de memoria.
 import Layout from "../layouts/Layout.astro";
 import VerbCard from "../components/VerbCard.astro";
 import VerbFilters from "../components/VerbFilters.astro";
+import TranscribeTrainer from "../components/TranscribeTrainer.astro";
 import { verbs } from "../data/verbs";
 ---
 
@@ -17,23 +21,35 @@ import { verbs } from "../data/verbs";
           Aprender Verbos
         </h1>
         <p class="mt-3 text-slate-400">
-          Filtra por tipo y por lección, y elige cuántas formas quieres estudiar.
+          Mira las tarjetas o transcribe los verbos hasta aprenderlos de memoria.
         </p>
+
+        <!-- ELEGIR FORMA DE ESTUDIAR -->
+        <div id="view-options" class="mt-6 inline-flex gap-2">
+          <button type="button" data-value="cards" class="chip active">Tarjetas</button>
+          <button type="button" data-value="transcribe" class="chip">Transcribir</button>
+        </div>
       </div>
 
-      <!-- FILTROS -->
+      <!-- FILTROS (sirven para las dos formas) -->
       <div class="mt-10">
         <VerbFilters />
       </div>
 
-      <!-- LISTA DE VERBOS -->
-      <div id="verb-list" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-        {verbs.map((verb) => <VerbCard verb={verb} />)}
+      <!-- VISTA 1: TARJETAS -->
+      <div id="cards-view">
+        <div id="verb-list" class="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+          {verbs.map((verb) => <VerbCard verb={verb} />)}
+        </div>
+        <p id="empty-msg" class="mt-10 hidden text-center text-red-400">
+          No hay verbos con estos filtros.
+        </p>
       </div>
 
-      <p id="empty-msg" class="mt-10 hidden text-center text-red-400">
-        No hay verbos con estos filtros.
-      </p>
+      <!-- VISTA 2: TRANSCRIBIR -->
+      <div id="transcribe-view" class="mt-10 hidden">
+        <TranscribeTrainer />
+      </div>
 
     </div>
   </section>
@@ -41,32 +57,50 @@ import { verbs } from "../data/verbs";
 
 <script>
   // Este código corre en el navegador (no en el servidor de Astro).
-  // Es JavaScript simple del DOM: muestra u oculta las tarjetas que ya
-  // están en la página según los filtros elegidos.
   import { matchesLessons } from "../data/lessons";
+  import type { Mode, TypeFilter } from "../data/questions";
   import { setupChips, setupLessonPicker, showVerbCount } from "../scripts/filters";
+  import { setupTranscribe } from "../scripts/transcribe";
 
   const cards = document.querySelectorAll<HTMLElement>(".verb-card");
   const emptyMsg = document.getElementById("empty-msg")!;
+  const cardsView = document.getElementById("cards-view")!;
+  const transcribeView = document.getElementById("transcribe-view")!;
 
-  let currentType = "all"; // "all" | "regular" | "irregular"
-  let currentMode = "3"; // "3" | "4"
+  let currentType: TypeFilter = "all";
+  let currentMode: Mode = "3";
   let currentLessons: number[] = []; // [] = todas
 
+  // El modo Transcribir lee los filtros con esta función.
+  const transcribe = setupTranscribe(() => ({
+    type: currentType,
+    mode: currentMode,
+    lessons: currentLessons,
+  }));
+
+  // Tarjetas <-> Transcribir
+  setupChips("view-options", (value) => {
+    cardsView.classList.toggle("hidden", value !== "cards");
+    transcribeView.classList.toggle("hidden", value !== "transcribe");
+  });
+
   setupChips("type-options", (value) => {
-    currentType = value;
+    currentType = value as TypeFilter;
     applyFilters();
+    transcribe.onListChange();
   });
   setupChips("mode-options", (value) => {
-    currentMode = value;
+    currentMode = value as Mode;
     applyFilters();
+    transcribe.onModeChange();
   });
   setupLessonPicker((selected) => {
     currentLessons = selected;
     applyFilters();
+    transcribe.onListChange();
   });
 
-  // Vuelve a aplicar todos los filtros sobre todas las tarjetas.
+  // Muestra u oculta las tarjetas según los filtros.
   function applyFilters() {
     let visible = 0;
 
