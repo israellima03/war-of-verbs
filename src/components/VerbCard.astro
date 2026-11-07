@@ -42,18 +42,19 @@ const lessonText = verb.lessons ? lessonIds.map((id) => `L${id}`).join(" · ") :
   </div>
 
   <!--
-    verb-fields: contenedor que el script cambia entre 3 y 4 columnas
-    según el modo elegido (3 formas o 4 formas).
+    Una forma por fila (nombre a la izquierda, verbo a la derecha).
+    Así las palabras largas como UNDERSTOOD o RESEMBLED siempre caben,
+    también en celular. min-w-0 + break-words: si no cupiera, baja de línea.
   -->
-  <div class="verb-fields mt-4 grid grid-cols-3 gap-3">
-    <div>
-      <p class="text-xs uppercase text-slate-500">Base Form</p>
-      <p class="text-lg font-bold text-slate-100">{verb.baseForm}</p>
+  <div class="mt-4 space-y-2">
+    <div class="flex items-baseline justify-between gap-3">
+      <p class="shrink-0 text-xs uppercase text-slate-500">Base Form</p>
+      <p class="min-w-0 break-words text-right text-lg font-bold text-slate-100">{verb.baseForm}</p>
     </div>
 
-    <div>
-      <p class="text-xs uppercase text-slate-500">Past Simple</p>
-      <p class="text-lg font-bold text-blue-400">{verb.pastSimple}</p>
+    <div class="flex items-baseline justify-between gap-3">
+      <p class="shrink-0 text-xs uppercase text-slate-500">Past Simple</p>
+      <p class="min-w-0 break-words text-right text-lg font-bold text-blue-400">{verb.pastSimple}</p>
     </div>
 
     <!--
@@ -62,13 +63,15 @@ const lessonText = verb.lessons ? lessonIds.map((id) => `L${id}`).join(" · ") :
       elige "4 Formas".
     -->
     <div class="participle-field hidden">
-      <p class="text-xs uppercase text-slate-500">Past Participle</p>
-      <p class="text-lg font-bold text-blue-400">{verb.pastParticiple}</p>
+      <div class="flex items-baseline justify-between gap-3">
+        <p class="shrink-0 text-xs uppercase text-slate-500">Past Participle</p>
+        <p class="min-w-0 break-words text-right text-lg font-bold text-blue-400">{verb.pastParticiple}</p>
+      </div>
     </div>
 
-    <div>
-      <p class="text-xs uppercase text-slate-500">Meaning</p>
-      <p class="text-lg font-bold text-slate-200">{verb.meaning}</p>
+    <div class="flex items-baseline justify-between gap-3">
+      <p class="shrink-0 text-xs uppercase text-slate-500">Meaning</p>
+      <p class="min-w-0 break-words text-right text-lg font-bold text-slate-200">{verb.meaning}</p>
     </div>
   </div>
 </div>

@@ -115,16 +115,7 @@ import { verbs } from "../data/verbs";
       if (show) visible++;
 
       // --- Filtro por cantidad de formas ---
-      const participleField = card.querySelector(".participle-field");
-      const fieldsGrid = card.querySelector(".verb-fields");
-
-      if (participleField && fieldsGrid) {
-        const show4Forms = currentMode === "4";
-        participleField.classList.toggle("hidden", !show4Forms);
-        // 4 formas en una tarjeta angosta no caben en una fila: usamos 2x2.
-        fieldsGrid.classList.toggle("grid-cols-3", !show4Forms);
-        fieldsGrid.classList.toggle("grid-cols-2", show4Forms);
-      }
+      card.querySelector(".participle-field")?.classList.toggle("hidden", currentMode !== "4");
     });
 
     showVerbCount(visible);

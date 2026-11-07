@@ -274,7 +274,7 @@ import VerbFilters from "../components/VerbFilters.astro";
           .map(
             (_card, i) => `
             <button type="button" data-card="${i}"
-              class="flex h-24 cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900 p-2 text-center transition hover:border-blue-500/50">
+              class="flex min-h-24 min-w-0 cursor-pointer flex-col items-center justify-center rounded-xl border border-slate-800 bg-slate-900 p-2 text-center transition hover:border-blue-500/50">
               ${backFace()}
             </button>`,
           )
@@ -303,7 +303,7 @@ import VerbFilters from "../components/VerbFilters.astro";
       const card = cards[index];
       button.innerHTML = `
         <span class="text-xs uppercase text-slate-500">${card.label}</span>
-        <span class="mt-1 break-words text-sm font-bold text-slate-100 sm:text-base">${card.text}</span>`;
+        <span class="mt-1 w-full break-words text-xs font-bold text-slate-100 sm:text-base">${card.text}</span>`;
       flipped.push(index);
       if (flipped.length < 2) return;
 

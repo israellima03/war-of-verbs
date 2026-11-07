@@ -19,7 +19,6 @@ const links = [
   { href: "/aprender", label: "Aprender" },
   { href: "/practicar", label: "Practicar" },
   { href: "/examen", label: "Examen" },
-  { href: "/ranking", label: "Ranking" },
 ];
 
 // Ruta actual sin "/" final ("/aprender/" -> "/aprender") para saber
@@ -108,12 +107,7 @@ const currentPath = Astro.url.pathname.replace(/\/$/, "") || "/";
             Aprende. Practica. Domina. Muéstrale quién manda a la Lic.
           </p>
         </div>
-        <div class="text-sm text-slate-500">
-          <a href="/#sugerencias" class="font-semibold text-blue-400 hover:text-blue-300">
-            Enviar sugerencia
-          </a>
-          <p class="mt-1">© 2026 Lima Tech · cel: 68319277</p>
-        </div>
+        <p class="text-sm text-slate-500">© 2026 Lima Tech · cel: 68319277</p>
       </div>
     </footer>
   </body>

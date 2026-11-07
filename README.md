@@ -2,7 +2,7 @@
 
 Aplicación web para aprender y practicar verbos en inglés con juegos y exámenes.
 
-Flujo: **Aprender → Practicar → Examen → Puntuación → Ranking → Mejorar**
+Flujo: **Aprender → Practicar → Examen → Puntuación → Mejorar**
 
 Hecha con Astro 7, TypeScript y Tailwind CSS 4. Sin login ni base de datos (por ahora).
 
@@ -21,22 +21,19 @@ Hecha con Astro 7, TypeScript y Tailwind CSS 4. Sin login ni base de datos (por 
 src/
 ├── layouts/Layout.astro        navbar, footer y <slot />
 ├── pages/                      cada archivo = una ruta
-│   ├── index.astro             /            (incluye el formulario de sugerencias)
+│   ├── index.astro             /
 │   ├── aprender.astro          /aprender
 │   ├── practicar.astro         /practicar   (5 juegos + pistas)
-│   ├── examen.astro            /examen
-│   └── ranking.astro           /ranking
+│   └── examen.astro            /examen
 ├── components/                 piezas reutilizables de HTML
 │   ├── VerbCard.astro
 │   ├── GameCard.astro
 │   ├── HintButton.astro
-│   ├── ScoreCard.astro
-│   └── RankingTable.astro
+│   └── ScoreCard.astro
 ├── data/
 │   ├── verbs.ts                lista de verbos
 │   ├── questions.ts            crea preguntas y pistas
-│   ├── score.ts                reglas de puntuación
-│   └── ranking.ts              datos y orden del ranking
+│   └── score.ts                reglas de puntuación
 ├── scripts/quiz.ts             dibuja preguntas en el navegador
 ├── types/verb.ts               interface Verb
 └── styles/global.css           Tailwind + clases compartidas
