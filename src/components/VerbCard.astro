@@ -21,7 +21,7 @@ const lessonText = verb.lessons ? lessonIds.map((id) => `L${id}`).join(" · ") :
   script de la página para saber qué tarjetas mostrar u ocultar al filtrar.
 -->
 <div
-  class="verb-card rounded-2xl border border-slate-800 bg-slate-800/50 p-6 transition hover:border-blue-500/50"
+  class="verb-card rounded-2xl border border-slate-800 bg-slate-800/50 p-5 transition sm:p-6 hover:border-blue-500/50"
   data-type={verb.type}
   data-lessons={lessonIds.join(" ")}
 >
@@ -42,19 +42,20 @@ const lessonText = verb.lessons ? lessonIds.map((id) => `L${id}`).join(" · ") :
   </div>
 
   <!--
-    Una forma por fila (nombre a la izquierda, verbo a la derecha).
-    Así las palabras largas como UNDERSTOOD o RESEMBLED siempre caben,
-    también en celular. min-w-0 + break-words: si no cupiera, baja de línea.
+    Una forma por fila: el nombre en una columna de ancho fijo y el verbo
+    justo al lado, así todos los verbos quedan alineados a la izquierda.
+    Las palabras largas como UNDERSTOOD o RESEMBLED también caben,
+    incluso en celular. break-words: si no cupiera, baja de línea.
   -->
   <div class="mt-4 space-y-2">
-    <div class="flex items-baseline justify-between gap-3">
-      <p class="shrink-0 text-xs uppercase text-slate-500">Base Form</p>
-      <p class="min-w-0 break-words text-right text-lg font-bold text-slate-100">{verb.baseForm}</p>
+    <div class="grid grid-cols-[5.75rem_minmax(0,1fr)] items-baseline gap-2">
+      <p class="text-xs uppercase text-slate-500">Base Form</p>
+      <p class="break-words text-base font-bold sm:text-lg text-slate-100">{verb.baseForm}</p>
     </div>
 
-    <div class="flex items-baseline justify-between gap-3">
-      <p class="shrink-0 text-xs uppercase text-slate-500">Past Simple</p>
-      <p class="min-w-0 break-words text-right text-lg font-bold text-blue-400">{verb.pastSimple}</p>
+    <div class="grid grid-cols-[5.75rem_minmax(0,1fr)] items-baseline gap-2">
+      <p class="text-xs uppercase text-slate-500">Past Simple</p>
+      <p class="break-words text-base font-bold sm:text-lg text-blue-400">{verb.pastSimple}</p>
     </div>
 
     <!--
@@ -63,15 +64,15 @@ const lessonText = verb.lessons ? lessonIds.map((id) => `L${id}`).join(" · ") :
       elige "4 Formas".
     -->
     <div class="participle-field hidden">
-      <div class="flex items-baseline justify-between gap-3">
-        <p class="shrink-0 text-xs uppercase text-slate-500">Past Participle</p>
-        <p class="min-w-0 break-words text-right text-lg font-bold text-blue-400">{verb.pastParticiple}</p>
+      <div class="grid grid-cols-[5.75rem_minmax(0,1fr)] items-baseline gap-2">
+        <p class="text-xs uppercase text-slate-500">Past Participle</p>
+        <p class="break-words text-base font-bold sm:text-lg text-blue-400">{verb.pastParticiple}</p>
       </div>
     </div>
 
-    <div class="flex items-baseline justify-between gap-3">
-      <p class="shrink-0 text-xs uppercase text-slate-500">Meaning</p>
-      <p class="min-w-0 break-words text-right text-lg font-bold text-slate-200">{verb.meaning}</p>
+    <div class="grid grid-cols-[5.75rem_minmax(0,1fr)] items-baseline gap-2">
+      <p class="text-xs uppercase text-slate-500">Meaning</p>
+      <p class="break-words text-base font-bold sm:text-lg text-slate-200">{verb.meaning}</p>
     </div>
   </div>
 </div>
