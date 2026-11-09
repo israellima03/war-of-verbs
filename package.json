@@ -16,6 +16,7 @@
     "tailwindcss": "^4.3.3"
   },
   "devDependencies": {
+    "@csstools/postcss-cascade-layers": "^6.0.2",
     "typescript": "^7.0.2"
   }
 }
